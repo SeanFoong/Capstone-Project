@@ -2,10 +2,10 @@ Group Name
 
 Team members:
 
-1. Justen
+1. Sean Foong
 
 2. Lim Jing Running man
 
-3. Sean Foong
+3. Justen
 
 4. Clarence
