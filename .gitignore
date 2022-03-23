@@ -91,4 +91,6 @@ ENV/
 # Replit files
 poetry.lock
 pyproject.toml
+replit.nix
+.replit
 .config/
