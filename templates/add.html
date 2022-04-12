@@ -1,10 +1,35 @@
 <html>
     <head>
-       <title>Add</title> 
+        {{% if page_type == 'add' %}}
+            <title>Add</title>
+
+        {{% elif page_type == 'add_club' %}}
+            <title>Add Club</title>
+
+        {{% elif page_type == 'confirm_club %'}}
+            <title>Confirm Club</title>
+
+        {{% elif page_type == 'add_activity' %}}
+            <title>Add Club</title>
+
+        {{% elif page_type == 'confirm_activity %'}}
+            <title>Confirm Club</title>
+       
+        {{% endif %}}
     </head>
+    
     <body>
-        <a href="/club">New Club</a><br />
-        <a href="/activity">New Activity</a><br />
+        {{% if page_type == 'add'}}
+        <h1>Add</h1>
+        <a href="/club">Add Club</a><br />
+        <a href="/activity">Add Activity</a><br />
+        
+        {{% elif page_type == 'add_club'}}
+        
+        
+
+
+        
     </body>
 
 
