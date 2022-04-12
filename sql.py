@@ -61,3 +61,18 @@ CREATE TABLE IF NOT EXISTS Student_Club(
     FOREIGN KEY(club_id) REFERENCES Club(id)
 ); """
 
+CREATE_STUDENT_ACTIVITY = """
+CREATE TABLE IF NOT EXISTS Student_Club_Activity(
+    student_id INTEGER,
+    club_id INTEGER,
+    activity_id INTEGER,
+    PRIMARY KEY(student_id, club_id, activity_id),
+    FOREIGN KEY(student_id) REFERENCES Student(id),
+    FOREIGN KEY(club_id) REFERENCES Club(id),
+    FOREIGN KEY(activity_id) REFERENCES Activity(id)
+); """
+
+# named parameters or parameterised insertion
+INSERT_STUDENT = """
+INSERT INTO Student VALUES (:id, :name, :age, :year_enrolled, :graduating_year, :class)
+);"""

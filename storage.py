@@ -19,7 +19,46 @@ class Collections:
         conn.commit()
         # conn.close() is automatically called
 
-    
+    def insert(self, table, data):
+#         with sqlite3.connect('nyjc_computing.db') as conn:
+#             cur = conn.cursor()
+#             cur.execute("""
+# INSERT into Student VALUES (?, ?, ?)""", 
+# tuple(data.values()))
+        pass
+
+    def update(self, table, col_checked, col_updated, data_checked, data_updated): # idk whether it works lmao
+        with sqlite3.connect('nyjc_computing.db') as conn:
+            cur = conn.cursor()
+            cur.execute(f"""
+        UPDATE {table}
+        SET {col_updated} = ?
+        WHERE {col_checked} = ?;
+                """,
+                (data_updated, data_checked),
+            )
+            conn.commit()
+
+        pass
+
+    def delete(self, table, col, data):
+        with sqlite3.connect('nyjc_computing.db') as conn: # idk whether it works lmao
+            cur = conn.cursor()
+            cur.execute(f"""
+        DELETE FROM {table}
+        WHERE {col} = ?;
+                """,
+                (data,),
+            )
+            conn.commit()
+
+
+        pass
+
+    def find(self, cols, table):
+        pass
+        
+        
 class Student(Collections):
     """
     Encapsulates a collection of student records.
@@ -58,7 +97,8 @@ class Class(Collections):
         # conn.close() is automatically called
 
         self.execute(sql.CREATE_CLASS)
-            
+
+        
 class Subject(Collections):
     """
     Encapsulates a collection of subject records.
@@ -76,6 +116,7 @@ class Subject(Collections):
         # conn.close() is automatically called
 
         self.execute(sql.CREATE_SUBJECT)
+
     
 class Club(Collections):
     """
@@ -93,6 +134,7 @@ class Club(Collections):
         # conn.close() is automatically called
 
         self.execute(sql.CREATE_CLUB)
+
     
 class Activity(Collections):
     """
@@ -112,14 +154,4 @@ class Activity(Collections):
         # conn.close() is automatically called
 
         self.execute(sql.CREATE_ACTIVITY)
-    
-
-        
-
-
-# for record in data:
-#     cur.execute(
-#         """INSERT INTO Subject VALUES(?, ?, ?),
-#         tuple(record.values())
-#         """)
     
