@@ -2,10 +2,10 @@ Group Name
 
 Team members:
 
-1. Justen
+1. Sean Foong
 
-2. Lim Jing Running man
+2. Lim Jing Running Man
 
-3. Sean Fooooooooooooooooooooooooooooooooooong loves cock
+3. Justen
 
 4. Clarence
