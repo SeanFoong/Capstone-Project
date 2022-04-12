@@ -22,19 +22,19 @@ def add():
                                    page_type='add_club',
                                    form_meta={'action':'/add?confirm_club',
                                               'method':'POST'},
-                                   form_data={'club_name':''})
+                                   form_data={'Club Name':''})
             
     elif 'confirm_club' in request.args:
         html = render_template('add.html',
                                page_type='confirm_club',
-                               form_meta={'action':'/add?club_success',
+                               form_meta={'action':'/add?success',
                                           'method':'POST'},
                                form_data=form_data)
 
     elif 'edit_club' in request.args:
         html = render_template('add.html',
                                page_type='add_club',
-                               form_meta={'action':'/add?edit_club',
+                               form_meta={'action':'/add?confirm_club',
                                           'method':'POST'},
                                form_data=form_data)
 
@@ -43,28 +43,33 @@ def add():
                                    page_type='add_activity',
                                    form_meta={'action':'/add?confirm_activity',
                                               'method':'POST'},
-                                   form_data={'activity_name':'',
-                                              'start_date':'',
-                                              'end_date':'',
-                                              'desc':''})
+                                   form_data={'Activity Name':'',
+                                              'Start Date':'',
+                                              'End Date':'',
+                                              'Description':''})
                                    
     elif 'confirm_activity' in request.args:
         html = render_template('add.html',
                                page_type='confirm_activity',
-                               form_meta={'action':'/add?activity_success',
+                               form_meta={'action':'/add?success',
+                                          'method':'POST'},
+                               form_data=form_data)
+
+    elif 'edit_activity' in request.args:
+        html = render_template('add.html',
+                               page_type='add_activity',
+                               form_meta={'action':'/add?confirm_activity',
                                           'method':'POST'},
                                form_data=form_data)
 
     else:
+        name = list(form_data.values())[0]
         html = render_template('add.html',
-                               page_type='add_activity',
-                               form_meta={'action':'/add?edit_activity',
-                                          'method':'POST'},
-                               form_data=form_data)
-
+                               page_type='success',
+                               name=name)
     return html
 
-
+@app.route('/')
 
 
 

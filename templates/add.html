@@ -23,6 +23,7 @@
             <h1>Add</h1>
             <a href="/add?club">Add Club</a><br />
             <a href="/add?activity">Add Activity</a><br />
+            <a href='/'>Return</a>
         
         {% elif page_type == 'add_club' %}
             <h2>Add Club</h2>
@@ -31,7 +32,7 @@
                 method="{{ form_meta['method'] }}"
             >
                 {% for key, value in form_data.items() %}
-                    <label for='{{ key }}'>{{ key|title }}:</label>
+                    <label for='{{ key }}'>{{ key }}:</label>
                     <input
                         id='{{ key }}'
                         type='text'
@@ -43,12 +44,14 @@
                 <input type='submit'>
             </form>
 
+            <a href='/'>Return</a>
+
         {% elif page_type == 'confirm_club' %}
             <h2>Confirm Submission</h2>
             <table>
                 {% for key, value in form_data.items() %}
                     <tr>
-                        <th>{{ key|title }}</th>
+                        <th>{{ key }}:</th>
                         <th>{{ value }}</th>
                     </tr>
                 {% endfor %}
@@ -64,14 +67,14 @@
                         type='hidden'
                         name='{{ key }}'
                         value='{{ value }}'
-                    /><br />
+                    />
                 {% endfor %}
 
                 <input type='submit' value='Confirm'>
             </form>
         
             <form
-                action='/add?club?edit'
+                action='/add?edit_club'
                 method='POST'"
             >
                 {% for key, value in form_data.items() %}
@@ -80,11 +83,80 @@
                         type='hidden'
                         name='{{ key }}'
                         value='{{ value }}'
-                    /><br />
+                    />
                 {% endfor %}
 
                 <input type='submit' value='Edit'>
             </form>
+
+        {% elif page_type == 'add_activity' %}
+            <h2>Add Activity</h2>
+            <form
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
+            >
+                {% for key, value in form_data.items() %}
+                    <label for='{{ key }}'>{{ key }}:</label>
+                    <input
+                        id='{{ key }}'
+                        type='text'
+                        name='{{ key }}'
+                        value='{{ value }}'
+                    /><br />
+                {% endfor %}
+                
+                <input type='submit'>
+            </form>
+
+            <a href='/'>Return</a>
+
+        {% elif page_type == 'confirm_activity' %}
+            <h2>Confirm Submission</h2>
+            <table>
+                {% for key, value in form_data.items() %}
+                    <tr>
+                        <th>{{ key }}:</th>
+                        <th>{{ value }}</th>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <form
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
+            >
+                {% for key, value in form_data.items() %}
+                    <input
+                        id='{{ key }}'
+                        type='hidden'
+                        name='{{ key }}'
+                        value='{{ value }}'
+                    />
+                {% endfor %}
+
+                <input type='submit' value='Confirm'>
+            </form>
+        
+            <form
+                action='/add?edit_activity'
+                method='POST'"
+            >
+                {% for key, value in form_data.items() %}
+                    <input
+                        id='{{ key }}'
+                        type='hidden'
+                        name='{{ key }}'
+                        value='{{ value }}'
+                    />
+                {% endfor %}
+
+                <input type='submit' value='Edit'>
+            </form>
+
+        {% else %}
+            <h2>{{ name }} Successfully Added</h2>
+            <a href='/'>Return</a>
+
         {% endif %}
     </body>
 </html>
