@@ -1,36 +1,90 @@
 <html>
     <head>
-        {{% if page_type == 'add' %}}
+        {% if page_type == 'add' %}
             <title>Add</title>
 
-        {{% elif page_type == 'add_club' %}}
+        {% elif page_type == 'add_club' %}
             <title>Add Club</title>
 
-        {{% elif page_type == 'confirm_club %'}}
+        {% elif page_type == 'confirm_club' %}
             <title>Confirm Club</title>
 
-        {{% elif page_type == 'add_activity' %}}
-            <title>Add Club</title>
+        {% elif page_type == 'add_activity' %}
+            <title>Add Activity</title>
 
-        {{% elif page_type == 'confirm_activity %'}}
-            <title>Confirm Club</title>
+        {% elif page_type == 'confirm_activity' %}
+            <title>Confirm Activity</title>
        
-        {{% endif %}}
+        {% endif %}
     </head>
     
     <body>
-        {{% if page_type == 'add'}}
-        <h1>Add</h1>
-        <a href="/club">Add Club</a><br />
-        <a href="/activity">Add Activity</a><br />
+        {% if page_type == 'add' %}
+            <h1>Add</h1>
+            <a href="/add?club">Add Club</a><br />
+            <a href="/add?activity">Add Activity</a><br />
         
-        {{% elif page_type == 'add_club'}}
-        
-        
+        {% elif page_type == 'add_club' %}
+            <h2>Add Club</h2>
+            <form
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
+            >
+                {% for key, value in form_data.items() %}
+                    <label for='{{ key }}'>{{ key|title }}:</label>
+                    <input
+                        id='{{ key }}'
+                        type='text'
+                        name='{{ key }}'
+                        value='{{ value }}'
+                    /><br />
+                {% endfor %}
+                
+                <input type='submit'>
+            </form>
 
+        {% elif page_type == 'confirm_club' %}
+            <h2>Confirm Submission</h2>
+            <table>
+                {% for key, value in form_data.items() %}
+                    <tr>
+                        <th>{{ key|title }}</th>
+                        <th>{{ value }}</th>
+                    </tr>
+                {% endfor %}
+            </table>
 
+            <form
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
+            >
+                {% for key, value in form_data.items() %}
+                    <input
+                        id='{{ key }}'
+                        type='hidden'
+                        name='{{ key }}'
+                        value='{{ value }}'
+                    /><br />
+                {% endfor %}
+
+                <input type='submit' value='Confirm'>
+            </form>
         
+            <form
+                action='/add?club?edit'
+                method='POST'"
+            >
+                {% for key, value in form_data.items() %}
+                    <input
+                        id='{{ key }}'
+                        type='hidden'
+                        name='{{ key }}'
+                        value='{{ value }}'
+                    /><br />
+                {% endfor %}
+
+                <input type='submit' value='Edit'>
+            </form>
+        {% endif %}
     </body>
-
-
 </html>
