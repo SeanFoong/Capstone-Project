@@ -19,8 +19,8 @@
         {% if page_type == 'add' %}
             <h1>Add</h1>
             <form
-                action='/add?new'
-                method='POST'
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
             >
                 <input
                     id='type'
@@ -32,8 +32,8 @@
             </form>
 
             <form
-                action='/add?new'
-                method='POST'
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
             >
                 <input
                     id='type'
@@ -121,6 +121,7 @@
 
         {% else %}
             <h2>{{ name }} Successfully Added</h2>
+            <a href='/add'>Add Another</a><br />
             <a href='/'>Return</a>
         {% endif %}
     </body>
