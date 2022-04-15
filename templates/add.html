@@ -11,11 +11,11 @@
 
         {% else %}
             <title>Success</title>
-       
         {% endif %}
     </head>
     
     <body>
+<!-- need to tidy up the input boxes and the confirmation page probably with css -->
         {% if page_type == 'add' %}
             <h1>Add</h1>
             <form
@@ -105,7 +105,7 @@
         
             <form
                 action='/add?edit'
-                method='POST'"
+                method='POST'
             >
                 {% for key, value in form_data.items() %}
                     <input

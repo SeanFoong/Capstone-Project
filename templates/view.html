@@ -1,14 +1,24 @@
 <html>
 <!-- Allow users to select a category of data and search for a record within the database under that category -->
     <head>
-       <title>View</title> 
+        {% if page_type == 'view' %}
+            <title>View</title>
+
+
+        {% endif %}
     </head>
+    
     <body>
-        <h1>View</h1>
-        <a href="/student">View Student</a><br />
-        <a href="/class">View Class</a><br />
-        <a href="/club">View club</a><br />
-        <a href="/activity">View Activity</a><br />
-        <a href='/'>Return</a>
+        {% if page_type == 'view' %}
+            <h1>View</h1>
+            <a href='/student'>View Student</a><br />
+            <a href='/class'>View Class</a><br />
+            <a href='/club'>View club</a><br />
+            <a href='/activity'>View Activity</a><br />
+            <a href='/'>Return</a>
+
+        {% elif page_type == '' %}
+
+        {% endif %}
     </body>
 </html>
