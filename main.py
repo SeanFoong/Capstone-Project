@@ -49,6 +49,7 @@ def add():
         html = render_template('add.html',
                                page_type='success',
                                name=name)
+        # add data to the database here i think
     return html
 
     
