@@ -10,60 +10,42 @@ def splash():
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     form_data = dict(request.form)
-
-    """Need reduce redundancy i think we'll just use one 'new' page for both club and activity adding, then confirm and edit page for both"""
-    
+ 
     if len(request.args) == 0:
         html = render_template('add.html',
                                page_type='add')
         
-    elif 'club' in request.args:
+    elif 'new' in request.args:
+        if form_data['type'] == 'Club':
+            form_data['Club Name'] = ''
+        else:
+            form_data['Activity Name'] = ''
+            form_data['Start Date'] = ''
+            form_data['End Date'] = ''
+            form_data['Description'] = ''           
+
         html = render_template('add.html',
-                               page_type='add_club',
-                               form_meta={'action':'/add?confirm_club',
+                               page_type='new',
+                               form_meta={'action':'/add?confirm',
                                           'method':'POST'},
-                               form_data={'Club Name':''})
+                               form_data=form_data)
             
-    elif 'confirm_club' in request.args:
+    elif 'confirm' in request.args:
         html = render_template('add.html',
-                               page_type='confirm_club',
+                               page_type='confirm',
                                form_meta={'action':'/add?success',
                                           'method':'POST'},
                                form_data=form_data)
 
-    elif 'edit_club' in request.args:
+    elif 'edit' in request.args:
         html = render_template('add.html',
-                               page_type='add_club',
-                               form_meta={'action':'/add?confirm_club',
-                                          'method':'POST'},
-                               form_data=form_data)
-
-    elif 'activity' in request.args:
-        html = render_template('add.html',
-                               page_type='add_activity',
-                               form_meta={'action':'/add?confirm_activity',
-                                          'method':'POST'},
-                               form_data={'Activity Name':'',
-                                          'Start Date':'',
-                                          'End Date':'',
-                                          'Description':''})
-                                   
-    elif 'confirm_activity' in request.args:
-        html = render_template('add.html',
-                               page_type='confirm_activity',
-                               form_meta={'action':'/add?success',
-                                          'method':'POST'},
-                               form_data=form_data)
-
-    elif 'edit_activity' in request.args:
-        html = render_template('add.html',
-                               page_type='add_activity',
-                               form_meta={'action':'/add?confirm_activity',
+                               page_type='new',
+                               form_meta={'action':'/add?confirm',
                                           'method':'POST'},
                                form_data=form_data)
 
     else:
-        name = list(form_data.values())[0]
+        name = list(form_data.values())[1]
         html = render_template('add.html',
                                page_type='success',
                                name=name)

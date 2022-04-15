@@ -1,20 +1,13 @@
 <html>
     <head>
-<!--         definitely can reduce redundancy here maybe combine club and activity like in the class work -->
         {% if page_type == 'add' %}
             <title>Add</title>
 
-        {% elif page_type == 'add_club' %}
-            <title>Add Club</title>
+        {% elif page_type == 'new' %}
+            <title>Add {{ form_data['type'] }}</title>
 
-        {% elif page_type == 'confirm_club' %}
-            <title>Confirm Club</title>
-
-        {% elif page_type == 'add_activity' %}
-            <title>Add Activity</title>
-
-        {% elif page_type == 'confirm_activity' %}
-            <title>Confirm Activity</title>
+        {% elif page_type == 'confirm' %}
+            <title>Confirm {{ form_data['type'] }}</title>
 
         {% else %}
             <title>Success</title>
@@ -25,46 +18,79 @@
     <body>
         {% if page_type == 'add' %}
             <h1>Add</h1>
-            <a href="/add?club">Add Club</a><br />
-            <a href="/add?activity">Add Activity</a><br />
+            <form
+                action='/add?new'
+                method='POST'
+            >
+                <input
+                    id='type'
+                    type='hidden'
+                    name='type'
+                    value='Club'
+                />
+                <input type='submit' value='Add Club'>
+            </form>
+
+            <form
+                action='/add?new'
+                method='POST'
+            >
+                <input
+                    id='type'
+                    type='hidden'
+                    name='type'
+                    value='Activity'
+                />
+                <input type='submit' value='Add Activity'>
+            </form>
             <a href='/'>Return</a>
         
-        {% elif page_type == 'add_club' %}
-            <h2>Add Club</h2>
+        {% elif page_type == 'new' %}
+            <h2>Add {{ form_data['type'] }}</h2>
             <form
                 action="{{ form_meta['action'] }}"
                 method="{{ form_meta['method'] }}"
             >
                 {% for key, value in form_data.items() %}
-                    <label for='{{ key }}'>{{ key }}:</label>
-                    <input
-                        id='{{ key }}'
-                        type='text'
-                        name='{{ key }}'
-                        value='{{ value }}'
-                    /><br />
+                    {% if key == 'type' %}
+                        <input
+                            id='{{ key }}'
+                            type='hidden'
+                            name='{{ key }}'
+                            value='{{ value }}'
+                        />
+                    {% else %}
+                        <label for='{{ key }}'>{{ key }}:</label>
+                        <input
+                            id='{{ key }}'
+                            type='text'
+                            name='{{ key }}'
+                            value='{{ value }}'
+                        /><br />
+                    {% endif %}
                 {% endfor %}
                 
-                <input type='submit'>
+                <input type='submit' value='Submit'>
             </form>
+            <a href='/add'>Return</a>
 
-            <a href='/'>Return</a>
-
-        {% elif page_type == 'confirm_club' %}
+        {% elif page_type == 'confirm' %}
             <h2>Confirm Submission</h2>
             <table>
                 {% for key, value in form_data.items() %}
-                    <tr>
-                        <th>{{ key }}:</th>
-                        <th>{{ value }}</th>
-                    </tr>
+                    {% if key != 'type' %}
+                        <tr>
+                            <th>{{ key }}:</th>
+                            <th>{{ value }}</th>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </table>
 
             <form
                 action="{{ form_meta['action'] }}"
                 method="{{ form_meta['method'] }}"
-            >
+            >               
                 {% for key, value in form_data.items() %}
                     <input
                         id='{{ key }}'
@@ -78,71 +104,7 @@
             </form>
         
             <form
-                action='/add?edit_club'
-                method='POST'"
-            >
-                {% for key, value in form_data.items() %}
-                    <input
-                        id='{{ key }}'
-                        type='hidden'
-                        name='{{ key }}'
-                        value='{{ value }}'
-                    />
-                {% endfor %}
-
-                <input type='submit' value='Edit'>
-            </form>
-
-        {% elif page_type == 'add_activity' %}
-            <h2>Add Activity</h2>
-            <form
-                action="{{ form_meta['action'] }}"
-                method="{{ form_meta['method'] }}"
-            >
-                {% for key, value in form_data.items() %}
-                    <label for='{{ key }}'>{{ key }}:</label>
-                    <input
-                        id='{{ key }}'
-                        type='text'
-                        name='{{ key }}'
-                        value='{{ value }}'
-                    /><br />
-                {% endfor %}
-                
-                <input type='submit'>
-            </form>
-
-            <a href='/'>Return</a>
-
-        {% elif page_type == 'confirm_activity' %}
-            <h2>Confirm Submission</h2>
-            <table>
-                {% for key, value in form_data.items() %}
-                    <tr>
-                        <th>{{ key }}:</th>
-                        <th>{{ value }}</th>
-                    </tr>
-                {% endfor %}
-            </table>
-
-            <form
-                action="{{ form_meta['action'] }}"
-                method="{{ form_meta['method'] }}"
-            >
-                {% for key, value in form_data.items() %}
-                    <input
-                        id='{{ key }}'
-                        type='hidden'
-                        name='{{ key }}'
-                        value='{{ value }}'
-                    />
-                {% endfor %}
-
-                <input type='submit' value='Confirm'>
-            </form>
-        
-            <form
-                action='/add?edit_activity'
+                action='/add?edit'
                 method='POST'"
             >
                 {% for key, value in form_data.items() %}
@@ -160,7 +122,6 @@
         {% else %}
             <h2>{{ name }} Successfully Added</h2>
             <a href='/'>Return</a>
-
         {% endif %}
     </body>
 </html>
