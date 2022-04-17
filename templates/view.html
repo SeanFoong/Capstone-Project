@@ -4,6 +4,10 @@
         {% if page_type == 'view' %}
             <title>View</title>
 
+        {% elif page_type == 'search' %}
+
+        {% elif page_type == 'result' %}
+
 
         {% endif %}
     </head>
@@ -11,13 +15,16 @@
     <body>
         {% if page_type == 'view' %}
             <h1>View</h1>
-            <a href='/student'>View Student</a><br />
+<!--             <a href='/student'>View Student</a><br />
             <a href='/class'>View Class</a><br />
             <a href='/club'>View club</a><br />
             <a href='/activity'>View Activity</a><br />
-            <a href='/'>Return</a>
+            <a href='/'>Return</a> -->
+<!--        same input code from add -->
 
-        {% elif page_type == '' %}
+        {% elif page_type == 'search' %}
+
+        {% elif page_type == 'result' %}
 
         {% endif %}
     </body>

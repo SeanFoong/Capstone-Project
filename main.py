@@ -9,6 +9,7 @@ def splash():
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
+    """Allow users to select a category of data and add a record to the database under that category."""
     form_data = dict(request.form)
  
     if len(request.args) == 0:
@@ -47,21 +48,22 @@ def add():
                                form_data=form_data)
 
     else:
+        # add data to the database here
         name = list(form_data.values())[1]
         html = render_template('add.html',
                                page_type='success',
                                name=name)
-        # add data to the database here i think
     return html
 
     
 @app.route('/view', methods=['GET', 'POST'])
 def view():
+    """Allow users to select a category of data and search for a record within the database under that category."""
     form_data = dict(request.form)
     
     if len(request.args) == 0:
         html = render_template('view.html',
-                               page_type='view',
+                               page_type='view',...
                               )
         
     elif 'search' in request.args:
@@ -73,7 +75,7 @@ def view():
 
     elif 'result' in request.args:
         # search database here
-        # form_data[''] = 
+        # form_data[keys] = values
         
         html = render_template('view.html',
                                page_type='result',
@@ -84,6 +86,17 @@ def view():
 
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
-    return render_template('edit.html')
+    """Allow users to select a category of data and search for a record within the database under that category, then edit that record."""
+    form_data = dict(request.form)
+
+    if len(request.args) == 0:
+        html = render_template('edit.html',
+                               page_type='edit',...)
+
+    elif '' in request.args:
+        pass
+
+        
+    return html
     
 app.run(host='0.0.0.0', port=8080)
