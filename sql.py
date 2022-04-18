@@ -15,15 +15,15 @@ CREATE_CLASS = """
 CREATE TABLE IF NOT EXISTS Class(
     id INTEGER,
     class_name TEXT,
-    level TEXT CHECK (level in ('JC1', 'JC2'),
+    level TEXT CHECK (level in ('JC1', 'JC2')),
     PRIMARY KEY(id)
 ); """
 
 CREATE_SUBJECT = """
 CREATE TABLE IF NOT EXISTS Subject(
     id INTEGER,
-    subject_name TEXT CHECK (name in 'GP', 'MATH', 'FM', 'COMP', 'PHY', 'CHEM', 'ECONS', 'BIO', 'GEO', 'HIST', 'ELIT', 'ART', 'CLTRANS', 'CL', 'ML', 'TL', 'CLL', 'CLB', 'PW', 'PUNJABI', 'HINDI', 'BENGALESE', 'JAPANESE'),
-    level TEXT CHECK (level in 'H1', 'H2', 'H3'),
+    subject_name TEXT CHECK (name in ('GP', 'MATH', 'FM', 'COMP', 'PHY', 'CHEM', 'ECONS', 'BIO', 'GEO', 'HIST', 'ELIT', 'ART', 'CLTRANS', 'CL', 'ML', 'TL', 'CLL', 'CLB', 'PW', 'PUNJABI', 'HINDI', 'BENGALESE', 'JAPANESE')),
+    level TEXT CHECK (level in ('H1', 'H2', 'H3')),
     PRIMARY KEY(id)
 ); """
 
