@@ -1,13 +1,16 @@
 <html>
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}" />
         <title>Welcome</title>
     </head>
 
     <body>
-        <h1>CCA Record Manager</h1>
-        <h3>Click The Links Below To Access The Features</h3><br />
-        <a href='/add'>Add Club/Activity</a><br />
-        <a href='/view'>View Student/Class/Club/Activity</a><br />
-        <a href='/edit'>Edit Membership/Participation</a><br />
+        <div class="header">
+          <h1>CCA Record Manager</h1>
+        </div>
+        
+        <a href='/add' class="button_top_left">Add Club/Activity</a><br />
+        <a href='/view' class="button_top_right">View Student/Class/Club/Activity</a><br />
+        <a href='/edit'class="button_bottom">Edit Membership/Participation</a><br />
     </body>
 </html>
