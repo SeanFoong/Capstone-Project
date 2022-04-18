@@ -1,8 +1,10 @@
-from flask import Flask
-app = Flask('app')
+from storage import Collections
+from sql import CREATE_STUDENT, INSERT_STUDENT
+record = {'id': 1, 'name': 'bob', 'age': 12, 'year_enrolled': 2021, 'graduating_year': 2023, 'class': '4-32'}
+# id, :name, :age, :year_enrolled, :graduating_year, :class
 
-@app.route('/')
-def hello_world():
-  return '<h1>Hello, World!</h1>'
+Coll = Collections(CREATE_STUDENT)
+# Coll.insert(INSERT_STUDENT, (record))
+Coll.update(12, 'bob')
+Coll.find('bob')
 
-app.run(host='0.0.0.0', port=8080)

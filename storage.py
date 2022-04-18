@@ -6,57 +6,71 @@ class Collections:
     Encapsulates a collection of records.
     """
     # initialising the data table
-    def __init__(self):
-        pass
+    def __init__(self, table_name): # table = sql.CREATE_ (respective table)
+        self.table = table_name
 
-    def execute(self, command, values=None):
+    def execute(self, command: str, values=None):
         with sqlite3.connect('nyjc_computing.db') as conn:
             cur = conn.cursor()
             if values == None:
                 cur.execute(command)
             else:
                 cur.execute(command, values)
-        conn.commit()
-        # conn.close() is automatically called
+                
+            conn.commit()
+            # conn.close() is automatically called
 
-    def insert(self, table, data):
+    def insert(self, command: str, record: dict):
+        # breakpoint()
+        self.execute(command, tuple(record.values()))
+        
 #         with sqlite3.connect('nyjc_computing.db') as conn:
 #             cur = conn.cursor()
 #             cur.execute("""
-# INSERT into Student VALUES (?, ?, ?)""", 
-# tuple(data.values()))
-        pass
+# INSERT into Student VALUES (?, ?, ?, ?, ?, ?)""", 
+# tuple(record.values()))
+#         conn.commit()
+        
 
-    def update(self, table, col_checked, col_updated, data_checked, data_updated): # idk whether it works lmao
+    def update(self, col, data_updated, data_checked): # idk whether it works lmao
         with sqlite3.connect('nyjc_computing.db') as conn:
             cur = conn.cursor()
             cur.execute(f"""
-        UPDATE {table}
-        SET {col_updated} = ?
-        WHERE {col_checked} = ?;
+        UPDATE {self.table}
+        SET ? = ?
+        WHERE id = ?;
                 """,
-                (data_updated, data_checked),
+                (col, data_updated, data_checked),
             )
             conn.commit()
 
-        pass
 
-    def delete(self, table, col, data):
+    def delete(self, key, value):
         with sqlite3.connect('nyjc_computing.db') as conn: # idk whether it works lmao
             cur = conn.cursor()
             cur.execute(f"""
-        DELETE FROM {table}
-        WHERE {col} = ?;
+        DELETE FROM {self.table}
+        WHERE ? = ?;
                 """,
-                (data,),
+                (key, value),
             )
             conn.commit()
+        return
 
-
-        pass
-
-    def find(self, cols, table):
-        pass
+    def find(self, key, value):
+        with sqlite3.connect('nyjc_computing.db') as conn: # idk whether it works lmao
+            cur = conn.cursor()
+            cur.execute(f"""
+        SELECT *
+        FROM {self.table}
+        WHERE ? = ?; 
+            """, 
+            (key, value)
+        )
+            record = cur.fetchone()
+            
+        print(record)
+        return 
         
         
 class Student(Collections):
@@ -68,9 +82,9 @@ class Student(Collections):
     - Year enrolled: int
     - Graduating year: int
     """
-    table = 'Student'
     # initialising the data table for students
-    def __init__(self, db_uri = 'nyjc_computing.db'):
+    def __init__(self):
+        self.table = 'Student'
         # with sqlite3.connect(db_uri) as conn:
         #     cur = conn.cursor()
         #     cur.execute(sql.CREATE_STUDENT)
@@ -87,9 +101,9 @@ class Class(Collections):
     - Name: str
     - Level: str {JC1, JC2}
     """
-    table = 'Class'
     # initialising the data table for class
-    def __init__(self, db_uri = 'nyjc_computing.db'):
+    def __init__(self):
+        self.table = 'Class'
         # with sqlite3.connect(db_uri) as conn:
         #     cur = conn.cursor()
         #     cur.execute(sql.CREATE_CLASS)
@@ -106,9 +120,9 @@ class Subject(Collections):
     - Name: str {GP, MATH, FM, COMP, PHY, CHEM, ECONS, BIO, GEO, HIST, ELIT, ART, CLTRANS, CL, ML, TL, CLL, CLB, PW, PUNJABI, HINDI, BENGALESE, JAPANESE}
     - Level: str {H1, H2, H3}
     """
-    table = 'Subject'
     # initialising the data table for class
-    def __init__(self, db_uri = 'nyjc_computing.db'):
+    def __init__(self):
+        self.table = 'Subject'
         # with sqlite3.connect(db_uri) as conn:
         #     cur = conn.cursor()
         #     cur.execute(sql.CREATE_SUBJECT)
@@ -124,9 +138,9 @@ class Club(Collections):
     Each record has the following columns:
     - Name: str 
     """
-    table = 'Club'
     # initialising the data table for class
-    def __init__(self, db_uri = 'nyjc_computing.db'):
+    def __init__(self):
+        self.table = 'Club'
         # with sqlite3.connect(db_uri) as conn:
         #     cur = conn.cursor()
         #     cur.execute(sql.CREATE_CLUB)
@@ -144,9 +158,9 @@ class Activity(Collections):
     - End Date: str (optional)
     - Description: str
     """
-    table = 'Activity'
     # initialising the data table for class
-    def __init__(self, db_uri = 'nyjc_computing.db'):
+    def __init__(self):
+        self.table = 'Activity'
         # with sqlite3.connect(db_uri) as conn:
         #     cur = conn.cursor()
         #     cur.execute(sql.CREATE_ACTIVITY)

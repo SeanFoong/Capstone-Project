@@ -2,11 +2,11 @@
 CREATE_STUDENT = """
 CREATE TABLE IF NOT EXISTS Student(
     id INTEGER,
-    name TEXT,
+    student_name TEXT,
     age INTEGER,
     year_enrolled INTEGER,
     graduating_year INTEGER,
-    class INTEGER;
+    class TEXT,
     PRIMARY KEY(id),
     FOREIGN KEY(class) REFERENCES Class(id)
 ); """
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Student(
 CREATE_CLASS = """
 CREATE TABLE IF NOT EXISTS Class(
     id INTEGER,
-    name TEXT,
+    class_name TEXT,
     level TEXT CHECK (level in ('JC1', 'JC2'),
     PRIMARY KEY(id)
 ); """
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Class(
 CREATE_SUBJECT = """
 CREATE TABLE IF NOT EXISTS Subject(
     id INTEGER,
-    name TEXT CHECK (name in 'GP', 'MATH', 'FM', 'COMP', 'PHY', 'CHEM', 'ECONS', 'BIO', 'GEO', 'HIST', 'ELIT', 'ART', 'CLTRANS', 'CL', 'ML', 'TL', 'CLL', 'CLB', 'PW', 'PUNJABI', 'HINDI', 'BENGALESE', 'JAPANESE'),
+    subject_name TEXT CHECK (name in 'GP', 'MATH', 'FM', 'COMP', 'PHY', 'CHEM', 'ECONS', 'BIO', 'GEO', 'HIST', 'ELIT', 'ART', 'CLTRANS', 'CL', 'ML', 'TL', 'CLL', 'CLB', 'PW', 'PUNJABI', 'HINDI', 'BENGALESE', 'JAPANESE'),
     level TEXT CHECK (level in 'H1', 'H2', 'H3'),
     PRIMARY KEY(id)
 ); """
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS Subject(
 CREATE_CLUB = """
 CREATE TABLE IF NOT EXISTS Club(
     id INTEGER,
-    name TEXT,
+    club_name TEXT,
     PRIMARY KEY(id)
 ); """
 
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS Student_Club(
     FOREIGN KEY(club_id) REFERENCES Club(id)
 ); """
 
-CREATE_STUDENT_ACTIVITY = """
+CREATE_STUDENT_CLUB_ACTIVITY = """
 CREATE TABLE IF NOT EXISTS Student_Club_Activity(
     student_id INTEGER,
     club_id INTEGER,
@@ -74,5 +74,5 @@ CREATE TABLE IF NOT EXISTS Student_Club_Activity(
 
 # named parameters or parameterised insertion
 INSERT_STUDENT = """
-INSERT INTO Student VALUES (:id, :name, :age, :year_enrolled, :graduating_year, :class)
-);"""
+INSERT INTO Student VALUES (?, ?, ?, ?, ?, ?)
+;"""
