@@ -56,6 +56,7 @@ def add():
         html = render_template('add.html',
                                page_type='success',
                                name=name)
+    
     return html  # Renders page
 
     
@@ -145,5 +146,6 @@ def edit():
                                name=name)    
         
     return html
-    
+
+
 app.run(host='0.0.0.0', port=8080)
