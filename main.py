@@ -63,10 +63,6 @@ def add():
 def view():
     """Allow users to select a category of data and search for a record within the database under that category."""
     form_data = dict(request.form)
-
-    for key, items in form_data.items():
-        print(key)
-        print(items)
     
     if len(request.args) == 0:
         html = render_template('view.html',
