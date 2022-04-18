@@ -24,13 +24,6 @@ class Collections:
         # breakpoint()
         self.execute(command, tuple(record.values()))
         
-#         with sqlite3.connect('nyjc_computing.db') as conn:
-#             cur = conn.cursor()
-#             cur.execute("""
-# INSERT into Student VALUES (?, ?, ?, ?, ?, ?)""", 
-# tuple(record.values()))
-#         conn.commit()
-        
 
     def update(self, col, data_updated, data_checked): # idk whether it works lmao
         with sqlite3.connect('nyjc_computing.db') as conn:
@@ -69,8 +62,7 @@ class Collections:
         )
             record = cur.fetchone()
             
-        print(record)
-        return 
+        return record
         
         
 class Student(Collections):

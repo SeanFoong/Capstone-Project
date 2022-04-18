@@ -76,3 +76,19 @@ CREATE TABLE IF NOT EXISTS Student_Club_Activity(
 INSERT_STUDENT = """
 INSERT INTO Student VALUES (?, ?, ?, ?, ?, ?)
 ;"""
+
+INSERT_CLASS = """
+INSERT INTO Class VALUES (?, ?, ?)
+"""
+
+INSERT_SUBJECT = """
+INSERT INTO Subject VALUES (?, ?, ?)
+"""
+
+INSERT_CLUB = """
+INSERT INTO Club VALUES (?, ?)
+"""
+
+INSERT_ACTIVITY = """
+INSERT INTO Class VALUES (?, ?, ?, ?)
+"""
