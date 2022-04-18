@@ -17,7 +17,7 @@
     <body>
 <!-- need to tidy up the input boxes and the confirmation page probably with css -->
         {% if page_type == 'add' %}
-            <h1>Add</h1>
+            <h2>Add</h2>
             <form
                 action="{{ form_meta['action'] }}"
                 method="{{ form_meta['method'] }}"
@@ -43,6 +43,7 @@
                 />
                 <input type='submit' value='Add Activity'>
             </form>
+        
             <a href='/'>Return</a>
         
         {% elif page_type == 'new' %}
@@ -50,7 +51,7 @@
             <form
                 action="{{ form_meta['action'] }}"
                 method="{{ form_meta['method'] }}"
-            >
+            >    
                 {% for key, value in form_data.items() %}
                     {% if key == 'type' %}
                         <input
@@ -72,6 +73,7 @@
                 
                 <input type='submit' value='Submit'>
             </form>
+        
             <a href='/add'>Return</a>
 
         {% elif page_type == 'confirm' %}
