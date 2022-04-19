@@ -1,12 +1,134 @@
 <html>
+<!-- Allow users to select a category of data and search for a record within the database under that category -->
     <head>
-       <title>View</title> 
+        {% if page_type == 'add' %}
+            <title>View</title>
+
+        {% elif page_type == 'new' %}
+            <title>View {{ form_data['type'] }}</title>
+
+        {% elif page_type == 'confirm' %}
+            <title>Confirm {{ form_data['type'] }}</title>
+
+        {% else %}
+            <title>Success</title>
+        {% endif %}
     </head>
+    
     <body>
-        <h1>View</h1>
-        <a href="/student">View Student</a><br />
-        <a href="/class">View Class</a><br />
-        <a href="/club">View club</a><br />
-        <a href="/activity">View Activity</a><br />
+        {% if page_type == 'view' %}
+            <h2>View</h2>
+            <form
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
+            >
+                <input
+                    id='type'
+                    type='hidden'
+                    name='type'
+                    value='Student'
+                />
+                <input type='submit' value='View Students'>
+            </form>
+
+            <form
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
+            >
+                <input
+                    id='type'
+                    type='hidden'
+                    name='type'
+                    value='Class'
+                />
+                <input type='submit' value='View Classes'>
+            </form>
+
+            <form
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
+            >
+                <input
+                    id='type'
+                    type='hidden'
+                    name='type'
+                    value='Club'
+                />
+                <input type='submit' value='View Clubs'>
+            </form>
+
+            <form
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
+            >
+                <input
+                    id='type'
+                    type='hidden'
+                    name='type'
+                    value='Activity'
+                />
+                <input type='submit' value='View Activities'>
+            </form>
+        
+        <a href='/'>Return</a>
+        
+        {% elif page_type == 'search' %}
+            <h2>Search {{ form_data['type'] }}</h2>
+            <form
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
+            >
+                {% for key, value in form_data.items() %}
+                    {% if key == 'type' %}
+                        <input
+                            id='{{ key }}'
+                            type='hidden'
+                            name='{{ key }}'
+                            value='{{ value }}'
+                        />
+                    {% else %}
+                        <label for='{{ key }}'>{{ key }}:</label>
+                        <input
+                            id='{{ key }}'
+                            type='text'
+                            name='{{ key }}'
+                            value='{{value}}'
+                        />
+                    {% endif %}
+                {% endfor %}
+                        
+                <input type='submit' value='Search'>
+            </form>
+            <a href='/view'>Return</a>
+        
+        {% else %}
+            <table>
+                {% for key, value in form_data.items() %}
+                    {% if key != 'type' %}
+                        <tr>
+                            <th>{{ key }}:</th>
+                            <th>{{ value }}</th>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+
+            <form
+                action='/view?search'
+                method='POST'
+            >
+                <input
+                    id='type'
+                    type='hidden'
+                    name='type'
+                    value="{{ form_data['type'] }}"
+                />
+                <input type='submit' value='Search Again'>
+            </form>
+        
+            <a href='/view'>Search Another</a><br />
+            <a href='/'>Return</a>
+            
+        {% endif %}
     </body>
 </html>
