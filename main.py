@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from convert import convert
-import validate,
+import validate
 
 
 app = Flask('app')
