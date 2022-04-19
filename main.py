@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from storage import Student, Class
-import validate
 from convert import convert
+import validate
 app = Flask('app')
 
 
