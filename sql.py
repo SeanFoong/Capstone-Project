@@ -1,3 +1,4 @@
+"""SQL Commands"""
 
 CREATE_STUDENT = """
 CREATE TABLE IF NOT EXISTS Student(
@@ -22,7 +23,11 @@ CREATE TABLE IF NOT EXISTS Class(
 CREATE_SUBJECT = """
 CREATE TABLE IF NOT EXISTS Subject(
     id INTEGER,
-    subject_name TEXT CHECK (name in ('GP', 'MATH', 'FM', 'COMP', 'PHY', 'CHEM', 'ECONS', 'BIO', 'GEO', 'HIST', 'ELIT', 'ART', 'CLTRANS', 'CL', 'ML', 'TL', 'CLL', 'CLB', 'PW', 'PUNJABI', 'HINDI', 'BENGALESE', 'JAPANESE')),
+    subject_name TEXT CHECK (name in 
+                ('GP', 'MATH', 'FM', 'COMP', 'PHY', 'CHEM',
+                 'ECONS', 'BIO', 'GEO', 'HIST', 'ELIT', 'ART',
+                 'CLTRANS', 'CL', 'ML', 'TL', 'CLL', 'CLB',
+                 'PW', 'PUNJABI', 'HINDI', 'BENGALESE', 'JAPANESE')),
     level TEXT CHECK (level in ('H1', 'H2', 'H3')),
     PRIMARY KEY(id)
 ); """
