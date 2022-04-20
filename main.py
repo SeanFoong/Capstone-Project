@@ -2,6 +2,9 @@ from flask import Flask, render_template, request
 from storage import Student, Class
 from convert import convert
 import validate
+import data
+
+# need to comment out the entire app for the database test code to work
 
 app = Flask('app')
 
@@ -45,7 +48,7 @@ def add():
                                form_meta={'action':'/add?success',
                                           'method':'POST'},
                                form_data=form_data)
-
+        
     elif 'edit' in request.args:
         html = render_template('add.html',
                                page_type='new',
@@ -154,34 +157,35 @@ def edit():
 app.run(host='0.0.0.0', port=8080)
 
 
-# testing code
-# student records
-student1 = {'id': 1, 'student_name': 'bob', 'age': 21, 'year_enrolled': 2021, 'graduating_year': 2023, 'class': '4-32'}
-student2 = {'id': 2, 'student_name': 'tom', 'age': 18, 'year_enrolled': 2020, 'graduating_year': 2022, 'class': '4-56'}
-student3 = {'id': 3, 'student_name': 'john', 'age': 16, 'year_enrolled': 2021, 'graduating_year': 2023, 'class': '4-32'}
-
-# class records
-class1 = {'id': 1, 'class_name': '4-32', 'level': 'JC1'}
-class2 = {'id': 2, 'class_name': '4-56', 'level': 'JC2'}
-
-# student obj + inserting to database
-Students = Student()
-Students.insert(student1)
-Students.insert(student2)
-Students.insert(student3)
-
-# class obj + inserting to database
-Classes = Class()
-Classes.insert(class1)
-Classes.insert(class2)
-
-Students.find(4)
-Students.find(2)
-Students.find(3)
-print()
-
-Students.delete(4)
-Students.update('jane', 2)
-Students.find(1)
-Students.find(2)
-Students.find(3)
+# if __name__ == "__main__":
+#     # testing code
+#     # student records
+#     student1 = {'id': 1, 'student_name': 'bob', 'age': 21, 'year_enrolled': 2021, 'graduating_year': 2023, 'class': '2201'}
+#     student2 = {'id': 2, 'student_name': 'tom', 'age': 18, 'year_enrolled': 2020, 'graduating_year': 2022, 'class': '2101'}
+#     student3 = {'id': 3, 'student_name': 'john', 'age': 16, 'year_enrolled': 2021, 'graduating_year': 2023, 'class': '2101'}
+    
+#     # class records
+#     class1 = {'id': 1, 'class_name': '2201', 'level': 'JC1'}
+#     class2 = {'id': 2, 'class_name': '2101', 'level': 'JC2'}
+    
+#     # student obj + inserting to database
+#     Students = Student()
+#     Students.insert(student1)
+#     Students.insert(student2)
+#     Students.insert(student3)
+    
+#     # class obj + inserting to database
+#     Classes = Class()
+#     Classes.insert(class1)
+#     Classes.insert(class2)
+    
+#     Students.find(4)
+#     Students.find(2)
+#     Students.find(3)
+#     print()
+    
+#     Students.delete(4)
+#     Students.update('jane', 2)
+#     Students.find(1)
+#     Students.find(2)
+#     Students.find(3)

@@ -70,7 +70,6 @@ class Student(Collections):
 
     
     def insert(self, record: dict):
-        # breakpoint()
         if not self.find(record['id']):
             self.execute(sql.INSERT_STUDENT, tuple(record.values()))
 
@@ -101,7 +100,7 @@ class Subject(Collections):
     - Name: str {GP, MATH, FM, COMP, PHY, CHEM, ECONS, BIO, GEO, HIST, ELIT, ART, CLTRANS, CL, ML, TL, CLL, CLB, PW, PUNJABI, HINDI, BENGALESE, JAPANESE}
     - Level: str {H1, H2, H3}
     """
-    # initialising the data table for class
+    # initialising the data table for subject
     def __init__(self):
         self.table = 'Subject'
         self.database = 'nyjc_computing.db'
@@ -119,7 +118,7 @@ class Club(Collections):
     Each record has the following columns:
     - Name: str 
     """
-    # initialising the data table for class
+    # initialising the data table for club
     def __init__(self):
         self.table = 'Club'
         self.database = 'nyjc_computing.db'
@@ -139,7 +138,7 @@ class Activity(Collections):
     - End Date: str (optional)
     - Description: str
     """
-    # initialising the data table for class
+    # initialising the data table for activity
     def __init__(self):
         self.table = 'Activity'
         self.database = 'nyjc_computing.db'

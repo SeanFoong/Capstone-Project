@@ -7,23 +7,25 @@ CREATE TABLE IF NOT EXISTS Student(
     age INTEGER,
     year_enrolled INTEGER,
     graduating_year INTEGER,
-    class TEXT,
+    class INTEGER,
     PRIMARY KEY(id),
     FOREIGN KEY(class) REFERENCES Class(id)
 ); """
 
+
 CREATE_CLASS = """
 CREATE TABLE IF NOT EXISTS Class(
     id INTEGER,
-    class_name TEXT,
+    class_name INTEGER,
     level TEXT CHECK (level in ('JC1', 'JC2')),
     PRIMARY KEY(id)
 ); """
 
+
 CREATE_SUBJECT = """
 CREATE TABLE IF NOT EXISTS Subject(
     id INTEGER,
-    subject_name TEXT CHECK (name in 
+    subject_name TEXT CHECK (subject_name in 
                 ('GP', 'MATH', 'FM', 'COMP', 'PHY', 'CHEM',
                  'ECONS', 'BIO', 'GEO', 'HIST', 'ELIT', 'ART',
                  'CLTRANS', 'CL', 'ML', 'TL', 'CLL', 'CLB',
@@ -32,12 +34,14 @@ CREATE TABLE IF NOT EXISTS Subject(
     PRIMARY KEY(id)
 ); """
 
+
 CREATE_CLUB = """
 CREATE TABLE IF NOT EXISTS Club(
     id INTEGER,
     club_name TEXT,
     PRIMARY KEY(id)
 ); """
+
 
 CREATE_ACTIVITY = """
 CREATE TABLE IF NOT EXISTS Activity(
@@ -48,6 +52,7 @@ CREATE TABLE IF NOT EXISTS Activity(
     PRIMARY KEY(id)
 ); """
 
+
 CREATE_STUDENT_SUBJECT = """
 CREATE TABLE IF NOT EXISTS Student_Subject(
     student_id INTEGER,
@@ -57,6 +62,7 @@ CREATE TABLE IF NOT EXISTS Student_Subject(
     FOREIGN KEY(subject_id) REFERENCES Subject(id)
 ); """
 
+
 CREATE_STUDENT_CLUB = """
 CREATE TABLE IF NOT EXISTS Student_Club(
     student_id INTEGER,
@@ -65,6 +71,7 @@ CREATE TABLE IF NOT EXISTS Student_Club(
     FOREIGN KEY(student_id) REFERENCES Student(id),
     FOREIGN KEY(club_id) REFERENCES Club(id)
 ); """
+
 
 CREATE_STUDENT_CLUB_ACTIVITY = """
 CREATE TABLE IF NOT EXISTS Student_Club_Activity(
@@ -77,23 +84,29 @@ CREATE TABLE IF NOT EXISTS Student_Club_Activity(
     FOREIGN KEY(activity_id) REFERENCES Activity(id)
 ); """
 
+
 # named parameters or parameterised insertion
 INSERT_STUDENT = """
 INSERT INTO Student VALUES (?, ?, ?, ?, ?, ?)
 ;"""
 
+
 INSERT_CLASS = """
 INSERT INTO Class VALUES (?, ?, ?)
 """
+
 
 INSERT_SUBJECT = """
 INSERT INTO Subject VALUES (?, ?, ?)
 """
 
+
 INSERT_CLUB = """
 INSERT INTO Club VALUES (?, ?)
 """
 
+
 INSERT_ACTIVITY = """
 INSERT INTO Class VALUES (?, ?, ?, ?)
 """
+
