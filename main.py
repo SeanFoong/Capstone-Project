@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from storage import Student, Class
 from convert import convert
 import validate
+
 app = Flask('app')
 
 
@@ -171,9 +172,9 @@ Students.insert(student2)
 Students.insert(student3)
 
 # class obj + inserting to database
-Class1 = Class()
-Class1.insert(class1)
-Class1.insert(class2)
+Classes = Class()
+Classes.insert(class1)
+Classes.insert(class2)
 
 Students.find(4)
 Students.find(2)
