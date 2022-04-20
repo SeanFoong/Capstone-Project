@@ -6,9 +6,8 @@ class Collections:
     Encapsulates a collection of records.
     """
     # initialising the data table
-    def __init__(self, table_name): # table = sql.CREATE_ (respective table)
-        self.table = table_name
-        self.database = 'nyjc_computing.db'
+    def __init__(self, table_name): 
+        pass
 
     
     def execute(self, command: str, values=None): 
@@ -23,7 +22,8 @@ class Collections:
             # conn.close() is automatically called
 
 
-    def update(self, data_updated, data_checked): # update by checking whether the id matches and changing the student name
+    def update(self, data_updated, data_checked): 
+        # update by checking whether the id matches and changing the student name
         with sqlite3.connect(self.database) as conn: # yes it does 
             query = """UPDATE """ + self.table + """ SET student_name = ? WHERE id = ?"""
             param = (data_updated, data_checked)
