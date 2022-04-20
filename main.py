@@ -2,8 +2,8 @@ from flask import Flask, render_template, request
 from storage import Student, Class
 from convert import convert
 import validate
-app = Flask('app')
 
+app = Flask('app')
 
 @app.route('/')
 def splash():
