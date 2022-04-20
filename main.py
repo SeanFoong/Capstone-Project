@@ -5,7 +5,6 @@ import validate
 
 app = Flask('app')
 
-
 @app.route('/')
 def splash():
   return render_template('splash.html')
