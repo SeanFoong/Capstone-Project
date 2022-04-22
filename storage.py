@@ -51,7 +51,6 @@ class Collections:
     def getMaxID(self): 
         query = """SELECT MAX(ID) FROM """  + self.table + ";"
         maxID = self.execute(query, fetchone=True)
-        print(maxID[0])
         return maxID[0]
         
 class Student(Collections):

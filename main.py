@@ -2,12 +2,12 @@ from flask import Flask, render_template, request
 from storage import Club, Activity
 from convert import convert
 import validate
-import data
+from data import StudentDB, ClassDB, SubjectDB
 
 app = Flask('app')
 
-Clubs = Club()
-Activities = Activity()
+ClubDB = Club()
+ActivityDB = Activity()
 
 @app.route('/')
 def splash():
@@ -64,7 +64,7 @@ def add():
         if form_data['type'] == 'Club':
             name = form_data['Club Name']
             record = {'name': name}
-            Clubs.insert(record) # insert record into Club database
+            ClubDB.insert(record) # insert record into Club database
             
         elif form_data['type'] == 'Activity':
             name = form_data['Activity Name']
@@ -73,7 +73,7 @@ def add():
                       'end_date': form_data['End Date'], 
                       'description': form_data['Description']
                      }
-            Activities.insert(record) # insert record into Activity database
+            ActivityDB.insert(record) # insert record into Activity database
             
         html = render_template('add.html',
                                page_type='success',
@@ -111,12 +111,32 @@ def view():
 
     elif 'result' in request.args:
         # search database here
-        print(form_data)
-        # if form_data['type'] == 'Student':
+        if form_data['type'] == 'Student':
+            student_name = form_data['Student Name']
+            data = StudentDB.find(student_name)
+            form_data['Age'] = data[2]
+            form_data['Year enrolled'] = data[3]
+            form_data['Graduating year'] = data[4]
+            form_data['Class'] = data[5]
+
+        elif form_data['type'] == 'Class':
+            class_name = form_data['Class Name']
+            data = ClassDB.find(class_name)
+            print(data)
+            form_data['Level'] = data[2]
+
+        elif form_data['type'] == 'Club':
+            club_name = form_data['Club Name']
+            data = ClubDB.find(club_name)
+            form_data['id'] = data[0]
             
-        form_data['test'] = 'test'
-        form_data['test1'] = 'test1'
-        
+        elif form_data['type'] == 'Activity':
+            activity_name = form_data['Activity Name']
+            data = ActivityDB.find(activity_name)
+            form_data['Start Date'] = data[2]
+            form_data['End Date'] = data[3]
+            form_data['Description'] = data[4]
+            
         html = render_template('view.html',
                                page_type='result',
                                form_data=form_data)
