@@ -162,3 +162,19 @@ class Activity(Collections):
             record_final = {'id': inserted_pos} 
             record_final.update(record) # insert id into front of dict
             self.execute(sql.INSERT_ACTIVITY, tuple(record_final.values()))
+
+
+class StudentClub(Collections):
+    # initialising the data table for student club
+    def __init__(self):
+        self.table = 'Student Club'
+        self.database = 'nyjc_computing.db'
+        self.execute(sql.CREATE_STUDENT_CLUB)
+
+
+class StudentActivity(Collections):
+    # initialising the data table for student activity
+    def __init__(self):
+        self.table = 'Student Activity'
+        self.database = 'nyjc_computing.db'
+        self.execute(sql.CREATE_STUDENT_ACTIVITY)

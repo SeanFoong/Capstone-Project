@@ -68,20 +68,23 @@ CREATE_STUDENT_CLUB = """
 CREATE TABLE IF NOT EXISTS Student_Club(
     student_id INTEGER,
     club_id INTEGER,
+    role TEXT DEFAULT 'Member',
     PRIMARY KEY(student_id, club_id),
     FOREIGN KEY(student_id) REFERENCES Student(id),
     FOREIGN KEY(club_id) REFERENCES Club(id)
 ); """
 
 
-CREATE_STUDENT_CLUB_ACTIVITY = """
-CREATE TABLE IF NOT EXISTS Student_Club_Activity(
+CREATE_STUDENT_ACTIVITY = """
+CREATE TABLE IF NOT EXISTS Student_Activity(
     student_id INTEGER,
-    club_id INTEGER,
     activity_id INTEGER,
-    PRIMARY KEY(student_id, club_id, activity_id),
+    category TEXT CHECK (category in ('Achievement', 'Enrichment', 'Leadership', 'Service')),
+    role TEXT DEFAULT 'Participant',
+    award TEXT,
+    hours INTEGER,
+    PRIMARY KEY(student_id, activity_id),
     FOREIGN KEY(student_id) REFERENCES Student(id),
-    FOREIGN KEY(club_id) REFERENCES Club(id),
     FOREIGN KEY(activity_id) REFERENCES Activity(id)
 ); """
 

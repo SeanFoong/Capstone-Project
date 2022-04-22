@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from storage import Club, Activity
+from storage import Club, Activity, StudentClub, StudentActivity
 from convert import convert
 import validate
 from data import StudentDB, ClassDB, SubjectDB
@@ -8,6 +8,9 @@ app = Flask('app')
 
 ClubDB = Club()
 ActivityDB = Activity()
+StudentClubDB = StudentClub()
+StudentActivityDB = StudentActivity()
+
 
 @app.route('/')
 def splash():
@@ -122,7 +125,6 @@ def view():
         elif form_data['type'] == 'Class':
             class_name = form_data['Class Name']
             data = ClassDB.find(class_name)
-            print(data)
             form_data['Level'] = data[2]
 
         elif form_data['type'] == 'Club':
@@ -170,7 +172,7 @@ def edit():
     elif 'result' in request.args:
         # search db
         # form_data[keys] = values
-        
+        print('result', form_data)
         html = render_template('edit.html',
                                page_type='result',
                                form_meta={'action':'edit?confirm',
@@ -178,6 +180,7 @@ def edit():
                                form_data=form_data)
 
     elif 'confirm' in request.args:
+        print('confirm', form_data)
         html = render_template('edit.html',
                                page_type='confirm',
                                form_meta={'action':'edit?success',
