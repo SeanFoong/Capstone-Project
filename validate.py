@@ -1,6 +1,15 @@
+"""Validate Functions"""
+
+def id(value):
+    if isinstance(value, int):
+        return value >= 0
+    else:
+        return False
+
+    
 def name(value):
-    if isinstance(value, str):
-        return value.istitle()
+    if isinstance(value, str) and value.isalpha():
+        return True
     else:
         return False
 
@@ -18,7 +27,7 @@ def class_level(value):
 
 def age(value):
     if isinstance(value, int):
-        return 16 <= value
+        return 16 <= value <= 20
     else:
         return False
 
@@ -31,11 +40,9 @@ def date(value):
 
 
 def category(value):
-    return value in ['Achievement',
-                     'Enrichment',
-                     'Leadership',
-                     'Service']
-
+    categoryList = ['Achievement', 'Enrichment', 'Leadership', 'Service']
+    return value in categoryList
+    
 
 def subject_name(value):
     subjects = ['GP', 'MATH', 'FM', 'COMP', 'PHY',
@@ -49,3 +56,6 @@ def subject_name(value):
 
 def subject_level(value):
     return value in ['H1', 'H2', 'H3']
+
+def description(value):
+    return isinstance(value, str)

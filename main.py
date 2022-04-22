@@ -1,9 +1,16 @@
 from flask import Flask, render_template, request
-from storage import Student, Class
+from storage import Club, Activity, StudentClub, StudentActivity
 from convert import convert
 import validate
+from data import StudentDB, ClassDB, SubjectDB
 
 app = Flask('app')
+
+ClubDB = Club()
+ActivityDB = Activity()
+StudentClubDB = StudentClub()
+StudentActivityDB = StudentActivity()
+
 
 @app.route('/')
 def splash():
@@ -46,6 +53,7 @@ def add():
                                           'method':'POST'},
                                form_data=form_data)
 
+        
     elif 'edit' in request.args:
         html = render_template('add.html',
                                page_type='new',
@@ -54,8 +62,22 @@ def add():
                                form_data=form_data)
 
     else:
-        # add data to the database here
-        name = list(form_data.values())[1]
+        record = {}
+        
+        if form_data['type'] == 'Club':
+            name = form_data['Club Name']
+            record = {'name': name}
+            ClubDB.insert(record) # insert record into Club database
+            
+        elif form_data['type'] == 'Activity':
+            name = form_data['Activity Name']
+            record = {'name': name,
+                      'start_date': form_data['Start Date'], 
+                      'end_date': form_data['End Date'], 
+                      'description': form_data['Description']
+                     }
+            ActivityDB.insert(record) # insert record into Activity database
+            
         html = render_template('add.html',
                                page_type='success',
                                name=name)
@@ -92,9 +114,31 @@ def view():
 
     elif 'result' in request.args:
         # search database here
-        form_data['test'] = 'test'
-        form_data['test1'] = 'test1'
-        
+        if form_data['type'] == 'Student':
+            student_name = form_data['Student Name']
+            data = StudentDB.find(student_name)
+            form_data['Age'] = data[2]
+            form_data['Year enrolled'] = data[3]
+            form_data['Graduating year'] = data[4]
+            form_data['Class'] = data[5]
+
+        elif form_data['type'] == 'Class':
+            class_name = form_data['Class Name']
+            data = ClassDB.find(class_name)
+            form_data['Level'] = data[2]
+
+        elif form_data['type'] == 'Club':
+            club_name = form_data['Club Name']
+            data = ClubDB.find(club_name)
+            form_data['id'] = data[0]
+            
+        elif form_data['type'] == 'Activity':
+            activity_name = form_data['Activity Name']
+            data = ActivityDB.find(activity_name)
+            form_data['Start Date'] = data[2]
+            form_data['End Date'] = data[3]
+            form_data['Description'] = data[4]
+            
         html = render_template('view.html',
                                page_type='result',
                                form_data=form_data)
@@ -128,7 +172,7 @@ def edit():
     elif 'result' in request.args:
         # search db
         # form_data[keys] = values
-        
+        print('result', form_data)
         html = render_template('edit.html',
                                page_type='result',
                                form_meta={'action':'edit?confirm',
@@ -136,6 +180,7 @@ def edit():
                                form_data=form_data)
 
     elif 'confirm' in request.args:
+        print('confirm', form_data)
         html = render_template('edit.html',
                                page_type='confirm',
                                form_meta={'action':'edit?success',
@@ -153,35 +198,3 @@ def edit():
 
 app.run(host='0.0.0.0', port=8080)
 
-
-# testing code
-# student records
-student1 = {'id': 1, 'student_name': 'bob', 'age': 21, 'year_enrolled': 2021, 'graduating_year': 2023, 'class': '4-32'}
-student2 = {'id': 2, 'student_name': 'tom', 'age': 18, 'year_enrolled': 2020, 'graduating_year': 2022, 'class': '4-56'}
-student3 = {'id': 3, 'student_name': 'john', 'age': 16, 'year_enrolled': 2021, 'graduating_year': 2023, 'class': '4-32'}
-
-# class records
-class1 = {'id': 1, 'class_name': '4-32', 'level': 'JC1'}
-class2 = {'id': 2, 'class_name': '4-56', 'level': 'JC2'}
-
-# student obj + inserting to database
-Students = Student()
-Students.insert(student1)
-Students.insert(student2)
-Students.insert(student3)
-
-# class obj + inserting to database
-Classes = Class()
-Classes.insert(class1)
-Classes.insert(class2)
-
-Students.find(4)
-Students.find(2)
-Students.find(3)
-print()
-
-Students.delete(4)
-Students.update('jane', 2)
-Students.find(1)
-Students.find(2)
-Students.find(3)
