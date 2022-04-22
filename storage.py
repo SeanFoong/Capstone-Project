@@ -23,27 +23,27 @@ class Collections:
 
 
     def update(self, data_updated, data_checked): 
-        # update by checking whether the id matches and changing the student name
+        # update by checking whether the name matches and changing the student name
         with sqlite3.connect(self.database) as conn: # yes it does 
-            query = """UPDATE """ + self.table + """ SET student_name = ? WHERE id = ?"""
+            query = """UPDATE """ + self.table + """ SET age = ? WHERE name = ?"""
             param = (data_updated, data_checked)
             cur = conn.cursor()
             cur.execute(query, param)
             conn.commit()
 
 
-    def delete(self, value): # delete the corresponding id, can change to whatever you want lol
+    def delete(self, value): # delete the corresponding name, can change to whatever you want lol
         with sqlite3.connect(self.database) as conn: # it works now
-            query = """DELETE FROM """ + self.table + """ WHERE id = ?;"""
+            query = """DELETE FROM """ + self.table + """ WHERE name = ?;"""
             param = (value, )
             cur = conn.cursor()
             cur.execute(query, param)
             conn.commit()
             
 
-    def find(self, value): # find the corresponding id, can change to whatever you want lol
+    def find(self, value): # find the corresponding name, can change to whatever you want lol
         with sqlite3.connect(self.database) as conn: # note to self, you cannot parameterise the table name aand column, only the values fml
-            query = """SELECT * FROM """ + self.table + """ WHERE id = ?;"""
+            query = """SELECT * FROM """ + self.table + """ WHERE name = ?;"""
             param = (value,)
             cur = conn.cursor()
             cur.execute(query, param)
@@ -70,7 +70,8 @@ class Student(Collections):
 
     
     def insert(self, record: dict):
-        if not self.find(record['id']):
+        print(record)
+        if not self.find(record['name']):
             self.execute(sql.INSERT_STUDENT, tuple(record.values()))
 
 
@@ -89,7 +90,7 @@ class Class(Collections):
 
     
     def insert(self, record: dict):
-        if not self.find(record['id']):
+        if not self.find(record['name']):
             self.execute(sql.INSERT_CLASS, tuple(record.values()))
 
         
@@ -108,7 +109,7 @@ class Subject(Collections):
 
     
     def insert(self, record: dict):
-        if not self.find(record['id']):
+        if not self.find(record['name']):
             self.execute(sql.INSERT_SUBJECT, tuple(record.values()))
 
         
@@ -122,12 +123,16 @@ class Club(Collections):
     def __init__(self):
         self.table = 'Club'
         self.database = 'nyjc_computing.db'
+        self.id = 1
         self.execute(sql.CREATE_CLUB)
 
     
     def insert(self, record: dict):
-        if not self.find(record['id']):
-            self.execute(sql.INSERT_CLUB, tuple(record.values()))
+        if not self.find(record['name']):
+            record_final = {'id': self.id}
+            record_final.update(record) # insert id into front of dict
+            self.execute(sql.INSERT_CLUB, tuple(record_final.values()))
+            self.id += 1
 
     
 class Activity(Collections):
@@ -142,12 +147,13 @@ class Activity(Collections):
     def __init__(self):
         self.table = 'Activity'
         self.database = 'nyjc_computing.db'
+        self.id = 1
         self.execute(sql.CREATE_ACTIVITY)
 
     
     def insert(self, record: dict):
-        # breakpoint()
-        if not self.find(record['id']):
-            print('yes')
-            self.execute(sql.INSERT_ACTIVITY, tuple(record.values()))
-
+        if not self.find(record['name']):
+            record_final = {'id': self.id} 
+            record_final.update(record) # insert id into front of dict
+            self.execute(sql.INSERT_ACTIVITY, tuple(record_final.values()))
+            self.id += 1

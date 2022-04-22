@@ -3,7 +3,7 @@
 CREATE_STUDENT = """
 CREATE TABLE IF NOT EXISTS Student(
     id INTEGER,
-    student_name TEXT,
+    name TEXT,
     age INTEGER,
     year_enrolled INTEGER,
     graduating_year INTEGER,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS Student(
 CREATE_CLASS = """
 CREATE TABLE IF NOT EXISTS Class(
     id INTEGER,
-    class_name INTEGER,
+    name INTEGER,
     level TEXT CHECK (level in ('JC1', 'JC2')),
     PRIMARY KEY(id)
 ); """
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS Class(
 CREATE_SUBJECT = """
 CREATE TABLE IF NOT EXISTS Subject(
     id INTEGER,
-    subject_name TEXT CHECK (subject_name in 
+    name TEXT CHECK (name in 
                 ('GP', 'MATH', 'FM', 'COMP', 'PHY', 'CHEM',
                  'ECONS', 'BIO', 'GEO', 'HIST', 'ELIT', 'ART',
                  'CLTRANS', 'CL', 'ML', 'TL', 'CLL', 'CLB',
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS Subject(
 CREATE_CLUB = """
 CREATE TABLE IF NOT EXISTS Club(
     id INTEGER,
-    club_name TEXT,
+    name TEXT,
     PRIMARY KEY(id)
 ); """
 
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS Club(
 CREATE_ACTIVITY = """
 CREATE TABLE IF NOT EXISTS Activity(
     id INTEGER,
-    activity_name TEXT,
+    name TEXT,
     start_date TEXT,
     end_date TEXT,
     description TEXT,

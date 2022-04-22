@@ -11,7 +11,7 @@ with open('csv/student.csv', 'r') as f: # convert student data into a list of di
     dictreader = csv.DictReader(f)
     for ordered_dict in dictreader:
         ordered_dict['id'] = int(ordered_dict['id'])
-        ordered_dict['student_name'] = str(ordered_dict['student_name'])
+        ordered_dict['name'] = str(ordered_dict['name'])
         ordered_dict['age'] = ordered_dict['age']
         ordered_dict['year_enrolled'] = ordered_dict['year_enrolled']
         ordered_dict['graduating_year'] = ordered_dict['graduating_year']
@@ -29,7 +29,7 @@ with open('csv/class.csv', 'r') as f: # convert cca data into a list of dict
     dictreader = csv.DictReader(f)
     for ordered_dict in dictreader:
         ordered_dict['id'] = int(ordered_dict['id'])
-        ordered_dict['class_name'] = int(ordered_dict['class_name'])
+        ordered_dict['name'] = int(ordered_dict['name'])
         ordered_dict['level'] = ordered_dict['level']
         class_data.append(dict(ordered_dict))
 
@@ -44,7 +44,7 @@ with open('csv/subject.csv', 'r') as f: # convert subject data into a list of di
     dictreader = csv.DictReader(f)
     for ordered_dict in dictreader:
         ordered_dict['id'] = int(ordered_dict['id'])
-        ordered_dict['subject_name'] = ordered_dict['subject_name']
+        ordered_dict['name'] = ordered_dict['name']
         ordered_dict['level'] = ordered_dict['level']
         subject_data.append(dict(ordered_dict))
 
@@ -59,7 +59,7 @@ club_data = []
 #     dictreader = csv.DictReader(f)
 #     for ordered_dict in dictreader:
 #         ordered_dict['id'] = int(ordered_dict['id'])
-#         ordered_dict['club_name'] = ordered_dict['club_name']
+#         ordered_dict['name'] = ordered_dict['name']
 #         club_data.append(dict(ordered_dict))
 
 # ClubDB = Club() # create club table

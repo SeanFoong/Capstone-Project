@@ -6,6 +6,8 @@ import data
 
 app = Flask('app')
 
+global club_id
+global activity_id 
 club_id = 1
 activity_id = 1
 Clubs = Club()
@@ -64,19 +66,17 @@ def add():
         record = {}
         if form_data['type'] == 'Club':
             name = form_data['Club Name']
-            record = {'id': club_id, 
-                      'club_name': name}
-            Clubs.insert(record)
+            record = {'name': name}
+            Clubs.insert(record) # insert record into Club database
             
         elif form_data['type'] == 'Activity':
             name = form_data['Activity Name']
-            record = {'id': activity_id, 
-                      'activity_name': name,
+            record = {'name': name,
                       'start_date': form_data['Start Date'], 
                       'end_date': form_data['End Date'], 
                       'description': form_data['Description']
                      }
-            Activities.insert(record)
+            Activities.insert(record) # insert record into Activity database
             
         html = render_template('add.html',
                                page_type='success',
