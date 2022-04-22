@@ -55,13 +55,13 @@ for subject in subject_data:
 
 club_data = []
 
-with open('csv/club.csv', 'r') as f: # convert club  data into a list of dict
-    dictreader = csv.DictReader(f)
-    for ordered_dict in dictreader:
-        ordered_dict['id'] = int(ordered_dict['id'])
-        ordered_dict['club_name'] = ordered_dict['club_name']
-        club_data.append(dict(ordered_dict))
+# with open('csv/club.csv', 'r') as f: # convert club  data into a list of dict
+#     dictreader = csv.DictReader(f)
+#     for ordered_dict in dictreader:
+#         ordered_dict['id'] = int(ordered_dict['id'])
+#         ordered_dict['club_name'] = ordered_dict['club_name']
+#         club_data.append(dict(ordered_dict))
 
-ClubDB = Club() # create club table
-for club in club_data:
-    ClubDB.insert(club) # insert club records
+# ClubDB = Club() # create club table
+# for club in club_data:
+#     ClubDB.insert(club) # insert club records

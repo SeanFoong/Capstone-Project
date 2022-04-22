@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS Club(
 CREATE_ACTIVITY = """
 CREATE TABLE IF NOT EXISTS Activity(
     id INTEGER,
+    activity_name TEXT,
     start_date TEXT,
     end_date TEXT,
     description TEXT,
@@ -107,6 +108,6 @@ INSERT INTO Club VALUES (?, ?)
 
 
 INSERT_ACTIVITY = """
-INSERT INTO Class VALUES (?, ?, ?, ?)
+INSERT INTO Activity VALUES (?, ?, ?, ?, ?)
 """
 

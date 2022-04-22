@@ -1,12 +1,15 @@
 from flask import Flask, render_template, request
-from storage import Student, Class
+from storage import Club, Activity
 from convert import convert
 import validate
 import data
 
-# need to comment out the entire app for the database test code to work
-
 app = Flask('app')
+
+club_id = 1
+activity_id = 1
+Clubs = Club()
+Activities = Activity()
 
 @app.route('/')
 def splash():
@@ -48,6 +51,7 @@ def add():
                                form_meta={'action':'/add?success',
                                           'method':'POST'},
                                form_data=form_data)
+
         
     elif 'edit' in request.args:
         html = render_template('add.html',
@@ -57,8 +61,23 @@ def add():
                                form_data=form_data)
 
     else:
-        # add data to the database here
-        name = list(form_data.values())[1]
+        record = {}
+        if form_data['type'] == 'Club':
+            name = form_data['Club Name']
+            record = {'id': club_id, 
+                      'club_name': name}
+            Clubs.insert(record)
+            
+        elif form_data['type'] == 'Activity':
+            name = form_data['Activity Name']
+            record = {'id': activity_id, 
+                      'activity_name': name,
+                      'start_date': form_data['Start Date'], 
+                      'end_date': form_data['End Date'], 
+                      'description': form_data['Description']
+                     }
+            Activities.insert(record)
+            
         html = render_template('add.html',
                                page_type='success',
                                name=name)
@@ -95,6 +114,9 @@ def view():
 
     elif 'result' in request.args:
         # search database here
+        print(form_data)
+        # if form_data['type'] == 'Student':
+            
         form_data['test'] = 'test'
         form_data['test1'] = 'test1'
         

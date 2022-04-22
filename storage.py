@@ -146,6 +146,8 @@ class Activity(Collections):
 
     
     def insert(self, record: dict):
+        # breakpoint()
         if not self.find(record['id']):
+            print('yes')
             self.execute(sql.INSERT_ACTIVITY, tuple(record.values()))
 
