@@ -1,11 +1,15 @@
-Group Name
+# Capstone Project
+Group Name: ?????
 
-Team members:
+## Project info:
+To create a CCA record updating system for the school.
 
-1. Sean Foong
+## Team members:
 
-2. Lim Jing Running Man
+1. Sean Foong (Team leader)
+2. Lim Jing Running Man (Web man)
+3. Justen (Senior dev)
+4. Clarence (Data man)
 
-3. Justen
-
-4. Clarence
+Still not done yet, it is WIP
+If you find any bugs, they are not bugs, there are features 😜 
