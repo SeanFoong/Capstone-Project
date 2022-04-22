@@ -53,7 +53,7 @@ for subject in subject_data:
     SubjectDB.insert(subject) # insert subject records
 
 
-club_data = []
+# club_data = []
 
 # with open('csv/club.csv', 'r') as f: # convert club  data into a list of dict
 #     dictreader = csv.DictReader(f)

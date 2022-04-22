@@ -10,48 +10,49 @@ class Collections:
         pass
 
     
-    def execute(self, command: str, values=None): 
+    def execute(self, command: str, values=None, **kwargs): 
         with sqlite3.connect(self.database) as conn:
             cur = conn.cursor()
             if values == None: 
                 cur.execute(command) # execute the command only if there are no additional values
             else:
                 cur.execute(command, values) # else execute the command with the values
-                
+
+            result = None
+            if kwargs.get('fetchone'):
+                result = cur.fetchone()
+            elif kwargs.get('fetchall'):
+                result = cur.fetchall()
             conn.commit()
             # conn.close() is automatically called
+        return result
 
 
     def update(self, data_updated, data_checked): 
         # update by checking whether the name matches and changing the student name
-        with sqlite3.connect(self.database) as conn: # yes it does 
-            query = """UPDATE """ + self.table + """ SET age = ? WHERE name = ?"""
-            param = (data_updated, data_checked)
-            cur = conn.cursor()
-            cur.execute(query, param)
-            conn.commit()
+        query = """UPDATE """ + self.table + """ SET age = ? WHERE name = ?"""
+        param = (data_updated, data_checked)
+        self.execute(query, param)
 
 
     def delete(self, value): # delete the corresponding name, can change to whatever you want lol
-        with sqlite3.connect(self.database) as conn: # it works now
-            query = """DELETE FROM """ + self.table + """ WHERE name = ?;"""
-            param = (value, )
-            cur = conn.cursor()
-            cur.execute(query, param)
-            conn.commit()
+        query = """DELETE FROM """ + self.table + """ WHERE name = ?;"""
+        param = (value,)
+        self.execute(query, param)
             
 
     def find(self, value): # find the corresponding name, can change to whatever you want lol
-        with sqlite3.connect(self.database) as conn: # note to self, you cannot parameterise the table name aand column, only the values fml
-            query = """SELECT * FROM """ + self.table + """ WHERE name = ?;"""
-            param = (value,)
-            cur = conn.cursor()
-            cur.execute(query, param)
-            record = cur.fetchone()
+        query = """SELECT * FROM """ + self.table + """ WHERE name = ?;"""
+        param = (value,)
+        name = self.execute(query, param, fetchone=True)
+        return name
 
-        print(record) # can comment this out just testing this on console lmao
-        return record
-        
+
+    def getMaxID(self): 
+        query = """SELECT MAX(ID) FROM """  + self.table + ";"
+        maxID = self.execute(query, fetchone=True)
+        print(maxID[0])
+        return maxID[0]
         
 class Student(Collections):
     """
@@ -70,7 +71,6 @@ class Student(Collections):
 
     
     def insert(self, record: dict):
-        print(record)
         if not self.find(record['name']):
             self.execute(sql.INSERT_STUDENT, tuple(record.values()))
 
@@ -123,16 +123,19 @@ class Club(Collections):
     def __init__(self):
         self.table = 'Club'
         self.database = 'nyjc_computing.db'
-        self.id = 1
         self.execute(sql.CREATE_CLUB)
 
     
     def insert(self, record: dict):
+        if self.getMaxID() == None: # if there is no items in the table 
+            inserted_pos = 1
+        else: # if there are items in the table
+            inserted_pos = self.getMaxID() + 1
+            
         if not self.find(record['name']):
-            record_final = {'id': self.id}
+            record_final = {'id': inserted_pos} # new inserted pos
             record_final.update(record) # insert id into front of dict
             self.execute(sql.INSERT_CLUB, tuple(record_final.values()))
-            self.id += 1
 
     
 class Activity(Collections):
@@ -147,13 +150,16 @@ class Activity(Collections):
     def __init__(self):
         self.table = 'Activity'
         self.database = 'nyjc_computing.db'
-        self.id = 1
         self.execute(sql.CREATE_ACTIVITY)
 
     
     def insert(self, record: dict):
+        if self.getMaxID() == None: # if there is no items in the table 
+            inserted_pos = 1
+        else: # if there are items in the table
+            inserted_pos = self.getMaxID() + 1
+            
         if not self.find(record['name']):
-            record_final = {'id': self.id} 
+            record_final = {'id': inserted_pos} 
             record_final.update(record) # insert id into front of dict
             self.execute(sql.INSERT_ACTIVITY, tuple(record_final.values()))
-            self.id += 1

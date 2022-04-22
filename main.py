@@ -6,10 +6,6 @@ import data
 
 app = Flask('app')
 
-global club_id
-global activity_id 
-club_id = 1
-activity_id = 1
 Clubs = Club()
 Activities = Activity()
 
@@ -64,6 +60,7 @@ def add():
 
     else:
         record = {}
+        
         if form_data['type'] == 'Club':
             name = form_data['Club Name']
             record = {'name': name}
