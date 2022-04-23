@@ -32,29 +32,36 @@ class Collections:
 
     def update(self, data_updated, data_checked): 
         # Update by checking whether the name matches and changing the student name
-        query = """UPDATE """ + self.table + """ SET age = ? WHERE name = ?"""
+        query = """UPDATE """ + self.table + """ SET name = ? WHERE name = ?"""
         param = (data_updated, data_checked)
         self.execute(query, param)
 
 
-    def delete(self, value):  # Delete the corresponding name
+    def delete(self, value): 
+        """Delete the corresponding data associated to the name"""
         query = """DELETE FROM """ + self.table + """ WHERE name = ?;"""
         param = (value,)
         self.execute(query, param)
             
 
-    def find(self, value):  # Find the corresponding data with the name provided
+    def find(self, value): 
+        """Find the corresponding data associated to the name"""
         query = """SELECT * FROM """ + self.table + """ WHERE name = ?;"""
         param = (value,)
         result = self.execute(query, param, fetchone=True)
         return result
 
 
-    def findID(self, value):  # Find the corresponding id with the name provided
+    def findID(self, value):  
+        """Find the corresponding id associated to the name"""
         query = """SELECT id FROM """ + self.table + """ WHERE name = ?;"""
         param = (value,)
         id = self.execute(query, param, fetchone=True) # id is a set and first value is the id
-        return id[0]
+        
+        if id is None:  # ID does not exist
+            return None
+        else:
+            return id[0]
         
 
     def getMaxID(self): 
@@ -182,11 +189,19 @@ class StudentClub(Collections):
         self.execute(sql.CREATE_STUDENT_CLUB)
 
     
-    def find(self, student_id, club_id):  # Find the corresponding data with the name provided
+    def find(self, student_id, club_id): 
+        """Find the corresponding data with the student name provided"""
         query = """SELECT * FROM """ + self.table + """ WHERE student_id = ? and club_id = ?;"""
         param = (student_id, club_id)
         result = self.execute(query, param, fetchone=True)
         return result
+
+
+    def update(self, club_id, role, student_id): 
+        """Update by checking whether the club and the role for one student"""
+        query = """UPDATE """ + self.table + """ SET club_id = ?, role = ? WHERE student_id = ?"""
+        param = (club_id, role, student_id)
+        self.execute(query, param)
 
 
 class StudentActivity(Collections):
@@ -197,9 +212,17 @@ class StudentActivity(Collections):
         self.execute(sql.CREATE_STUDENT_ACTIVITY)
 
     
-    def find(self, student_id, activity_id):  # Find the corresponding data with the name provided
+    def find(self, student_id, activity_id):  
+        """Find the corresponding data with the student name provided"""
         query = """SELECT * FROM """ + self.table + """ WHERE student_id = ? and activity_id = ?;"""
         param = (student_id, activity_id)
         result = self.execute(query, param, fetchone=True)
         return result
+
+    
+    def update(self, activity_id, category, role, award, hours, student_id): 
+        """Update by checking whether the activity and the role for one student"""
+        query = """UPDATE """ + self.table + """ SET activity_id = ?, category = ?, role = ?, award = ?, hours = ? WHERE student_id = ?"""
+        param = (activity_id, category, role, award, hours, student_id)
+        self.execute(query, param)
 
