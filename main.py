@@ -314,6 +314,5 @@ def edit():
                                page_type='success',
                                name=name)    
 
-    return html  # Alright since we're doyeah i push or you push ne for the most part ig just push to main u push tahen i go gigiththub
-
+    return html 
 app.run(host='0.0.0.0', port=8080)
