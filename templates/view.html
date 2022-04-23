@@ -10,8 +10,12 @@
         {% elif page_type == 'confirm' %}
             <title>Confirm {{ form_data['type'] }}</title>
 
+        {% elif page_type == 'error' %}
+            <title>{{ form_data['type'] }} not found</title>
+        
         {% else %}
             <title>Success</title>
+        
         {% endif %}
     </head>
     
@@ -92,7 +96,7 @@
                             id='{{ key }}'
                             type='text'
                             name='{{ key }}'
-                            value='{{value}}'
+                            value='{{ value }}'
                         />
                     {% endif %}
                 {% endfor %}
@@ -100,8 +104,25 @@
                 <input type='submit' value='Search'>
             </form>
             <a href='/view'>Return</a>
+
+        {% elif page_type == 'error' %}
+            <h2>{{ form_data['type'] }} cannot be found</h2>
+            <form
+                action='/view?search'
+                method='POST'
+            >
+                <input
+                    id='type'
+                    type='hidden'
+                    name='type'
+                    value="{{ form_data['type'] }}"
+                />
+                <input type='submit' value='Search Again'>
+            </form>
+            <a href='/view'>Search Another</a><br />
+            <a href='/'>Return</a>
         
-        {% else %}
+        {% elif page_type == 'result' %}
             <table>
                 {% for key, value in form_data.items() %}
                     {% if key != 'type' %}
