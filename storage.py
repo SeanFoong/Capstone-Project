@@ -5,7 +5,7 @@ class Collections:
     """
     Encapsulates a collection of records.
     """
-    # initialising the data table
+    # Initialising the data table
     def __init__(self, table_name): 
         pass
 
@@ -14,9 +14,11 @@ class Collections:
         with sqlite3.connect(self.database) as conn:
             cur = conn.cursor()
             if values == None: 
-                cur.execute(command) # execute the command only if there are no additional values
+                # Execute the command only if there are no additional values
+                cur.execute(command) 
             else:
-                cur.execute(command, values) # else execute the command with the values
+                # Else execute the command with the values
+                cur.execute(command, values) 
 
             result = None
             if kwargs.get('fetchone'):
@@ -29,29 +31,37 @@ class Collections:
 
 
     def update(self, data_updated, data_checked): 
-        # update by checking whether the name matches and changing the student name
+        # Update by checking whether the name matches and changing the student name
         query = """UPDATE """ + self.table + """ SET age = ? WHERE name = ?"""
         param = (data_updated, data_checked)
         self.execute(query, param)
 
 
-    def delete(self, value): # delete the corresponding name, can change to whatever you want lol
+    def delete(self, value):  # Delete the corresponding name
         query = """DELETE FROM """ + self.table + """ WHERE name = ?;"""
         param = (value,)
         self.execute(query, param)
             
 
-    def find(self, value): # find the corresponding name, can change to whatever you want lol
+    def find(self, value):  # Find the corresponding data with the name provided
         query = """SELECT * FROM """ + self.table + """ WHERE name = ?;"""
         param = (value,)
-        name = self.execute(query, param, fetchone=True)
-        return name
+        result = self.execute(query, param, fetchone=True)
+        return result
 
+
+    def findID(self, value):  # Find the corresponding id with the name provided
+        query = """SELECT id FROM """ + self.table + """ WHERE name = ?;"""
+        param = (value,)
+        id = self.execute(query, param, fetchone=True) # id is a set and first value is the id
+        return id[0]
+        
 
     def getMaxID(self): 
         query = """SELECT MAX(ID) FROM """  + self.table + ";"
         maxID = self.execute(query, fetchone=True)
         return maxID[0]
+
         
 class Student(Collections):
     """
@@ -167,14 +177,29 @@ class Activity(Collections):
 class StudentClub(Collections):
     # initialising the data table for student club
     def __init__(self):
-        self.table = 'Student Club'
+        self.table = 'Student_Club'
         self.database = 'nyjc_computing.db'
         self.execute(sql.CREATE_STUDENT_CLUB)
+
+    
+    def find(self, student_id, club_id):  # Find the corresponding data with the name provided
+        query = """SELECT * FROM """ + self.table + """ WHERE student_id = ? and club_id = ?;"""
+        param = (student_id, club_id)
+        result = self.execute(query, param, fetchone=True)
+        return result
 
 
 class StudentActivity(Collections):
     # initialising the data table for student activity
     def __init__(self):
-        self.table = 'Student Activity'
+        self.table = 'Student_Activity'
         self.database = 'nyjc_computing.db'
         self.execute(sql.CREATE_STUDENT_ACTIVITY)
+
+    
+    def find(self, student_id, activity_id):  # Find the corresponding data with the name provided
+        query = """SELECT * FROM """ + self.table + """ WHERE student_id = ? and activity_id = ?;"""
+        param = (student_id, activity_id)
+        result = self.execute(query, param, fetchone=True)
+        return result
+

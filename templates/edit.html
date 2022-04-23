@@ -55,7 +55,7 @@
                             type='text'
                             name='{{ key }}'
                             value='{{value}}'
-                        />
+                        /><br />
                     {% endif %}
                 {% endfor %}
                         
@@ -63,6 +63,22 @@
             </form>
             <a href='/edit'>Return</a>
 
+        {% elif page_type == 'error' %}
+            <h2>{{ form_data['type'] }} cannot be found</h2>
+            <form
+                action='/view?search'
+                method='POST'
+            >
+                <input
+                    id='type'
+                    type='hidden'
+                    name='type'
+                    value="{{ form_data['type'] }}"
+                />
+            </form>
+            <a href='/edit'>Search Again</a><br />
+            <a href='/'>Return</a>
+        
         {% elif page_type == 'result' %}
             <table>
                 {% for key, value in form_data.items() %}
