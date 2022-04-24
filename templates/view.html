@@ -11,8 +11,12 @@
         {% elif page_type == 'search' %}
             <title>Search {{ form_data['type'] }}</title>
 
+        {% elif page_type == 'error' %}
+            <title>{{ form_data['type'] }} not found</title>
+        
         {% else %}
             <title>Result</title>
+
         {% endif %}
     </head>
     
@@ -129,7 +133,7 @@
             <a href='/view'>Search Another</a><br />
             <a href='/'>Return</a>
         
-        {% else %}
+        {% elif page_type == 'result' %}
             <table>
                 {% for key, value in form_data.items() %}
                     {% if key != 'type' %}

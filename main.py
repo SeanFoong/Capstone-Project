@@ -2,11 +2,10 @@ from flask import Flask, render_template, request
 from storage import Club, Activity, StudentClub, StudentActivity
 from convert import convert
 import validate
-from data import StudentDB, ClassDB, SubjectDB
+from data import StudentDB, ClassDB, SubjectDB, ClubDB
 
 app = Flask('app')
 
-ClubDB = Club()
 ActivityDB = Activity()
 StudentClubDB = StudentClub()
 StudentActivityDB = StudentActivity()
@@ -14,12 +13,13 @@ StudentActivityDB = StudentActivity()
 
 @app.route('/')
 def splash():
-  return render_template('splash.html')
+    return render_template('splash.html')
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     """Allow users to select a category of data and 
     add a record to the database under that category."""
+    
     form_data = dict(request.form)
  
     if len(request.args) == 0:  # First page
@@ -113,28 +113,29 @@ def add():
         if form_data['type'] == 'Club':
             name = form_data['Club Name']
             record = {'name': name}
-            ClubDB.insert(record) # insert record into Club database
+            ClubDB.insert(record) # Insert record into Club database
             
-        elif form_data['type'] == 'Activity':
+        else:
             name = form_data['Activity Name']
             record = {'name': name,
                       'start_date': form_data['Start Date'], 
                       'end_date': form_data['End Date'], 
                       'description': form_data['Description']
                      }
-            ActivityDB.insert(record) # insert record into Activity database
+            ActivityDB.insert(record) # Insert record into Activity database
             
         html = render_template('add.html',
                                page_type='success',
                                name=name)
     
-    return html  # Renders page
+    return html  # Renders page what part of the table do you want changed?
 
     
 @app.route('/view', methods=['GET', 'POST'])
 def view():
     """Allow users to select a category of data and search for a 
     record within the database under that category."""
+
     form_data = dict(request.form)
     
     if len(request.args) == 0:
@@ -160,9 +161,21 @@ def view():
                                form_data=form_data)
 
     elif 'result' in request.args:
-        # Search database here
         if form_data['type'] == 'Student':
-            print(form_data['Student Name'])
+            student_name = form_data['Student Name']
+            data = StudentDB.find(student_name)
+            
+            if data is None: # Record not present
+                html = render_template('view.html', 
+                                       page_type='error',
+                                       form_data=form_data)
+                return html
+                
+            else:
+                form_data['Age'] = data[2]
+                form_data['Year enrolled'] = data[3]
+                form_data['Graduating year'] = data[4]
+                form_data['Class'] = data[5]
 
             if validate.name(form_data['Student Name']):
                 student_name = form_data['Student Name']
@@ -224,8 +237,8 @@ def view():
                                        page_type='error',
                                        form_data=form_data)
                 return html
-
-        elif form_data['type'] == 'Activity':
+              
+        else:
             if validate.name(form_data['Activity Name']):
                 activity_name = form_data['Activity Name']
                 data = ActivityDB.find(activity_name)
@@ -248,7 +261,7 @@ def view():
                                        page_type='error',
                                        form_data=form_data)
                 return html
-    
+
         html = render_template('view.html',
                                page_type='result',
                                form_data=form_data)
@@ -293,9 +306,11 @@ def edit():
             if form_data['type'] == 'Membership':
                 club_name = form_data['Club Name']
                 club_id = ClubDB.findID(club_name)
-                
+
                 if club_id is not None:  # Checks if the club exists in db
                     membership_data = StudentClubDB.find(student_id, club_id)
+                    print(student_id, club_id)
+                    print(membership_data) 
                     
                     if membership_data is not None: # Checks if student in club
                         print(membership_data)
@@ -392,5 +407,6 @@ def edit():
                                name=name)    
 
     return html
+
 
 app.run(host='0.0.0.0', port=8080)
