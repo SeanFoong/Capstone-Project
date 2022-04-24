@@ -292,12 +292,9 @@ def edit():
 
                 if club_id is not None:  # Checks if the club exists in db
                     membership_data = StudentClubDB.find(student_id, club_id)
-                    print(student_id, club_id)
-                    print(membership_data) 
                     
                     if membership_data is not None: # Checks if student in club
-                        print(membership_data)
-                        form_data['Role'] = ''
+                        form_data['Role'] = membership_data[2]
 
                         html = render_template('edit.html',
                                                page_type='result',
@@ -315,10 +312,10 @@ def edit():
                     participation_data = StudentActivityDB.find(student_id, activity_id)
                     
                     if participation_data is not None: # Checks if student is participant
-                        form_data['Category'] = ''
-                        form_data['Role'] = ''
-                        form_data['Award'] = ''
-                        form_data['Hours'] = ''
+                        form_data['Category'] = participation_data[2]
+                        form_data['Role'] = participation_data[3]
+                        form_data['Award'] = participation_data[4]
+                        form_data['Hours'] = participation_data[5]
                 
                         html = render_template('edit.html',
                                                page_type='result',
