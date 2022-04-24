@@ -55,7 +55,7 @@
                             type='text'
                             name='{{ key }}'
                             value='{{value}}'
-                        />
+                        /><br />
                     {% endif %}
                 {% endfor %}
                         
@@ -63,6 +63,23 @@
             </form>
             <a href='/edit'>Return</a>
 
+        {% elif page_type == 'error' %}
+            <h2>{{ form_data['type'] }} cannot be found</h2>
+            <form
+                action='/edit?search'
+                method='POST'
+            >
+                <input
+                    id='type'
+                    type='hidden'
+                    name='type'
+                    value="{{ form_data['type'] }}"
+                />
+                <input type='submit' value='Search Again'>
+            </form>
+            <a href='/edit'>Search Another</a><br />
+            <a href='/'>Return</a>
+        
         {% elif page_type == 'result' %}
             <table>
                 {% for key, value in form_data.items() %}
@@ -120,9 +137,16 @@
             <h2>Confirm Edit</h2>
                 <table>
                     {% for key, value in form_data.items() %}
-                        {% if key != 'type' %}
+                        {% if key == 'type' %}
                             <tr>
-                                <th>New {{ key }}:</th>
+                                <th>Field</th>
+                                <th>Old</th>
+                                <th>New</th>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <th>{{ key }}:</th>
+                                <th>{{ old_data[key] }} -></th>
                                 <th>{{ value }}</th>
                             </tr>
                         {% endif %}
@@ -171,15 +195,18 @@
                         name='type'
                         value="{{ form_data['type'] }}"
                     />
-                    <!-- <a href='/edit' 
+                    
+                    <!-- 
+                    <a href='/edit' 
                     onclick="document.getElementById('edit_cancel').submit()">
                     Cancel
                     </a>
-                    For text buttons -->
+                    For text buttons
+                    -->
+                    
                     <input type='submit' value='Cancel'>
                 </form>
         
-
         {% else %}
             <h2>{{ name }} Successfully Edited</h2>
             <a href='/edit'>Edit Another</a><br />

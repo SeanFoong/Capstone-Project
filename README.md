@@ -1,5 +1,5 @@
 # Capstone Project
-Group Name: ?????
+Group Name: Group Name
 
 ## Project info:
 To create a CCA record updating system for the school.

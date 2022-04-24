@@ -1,21 +1,31 @@
 <html>
 <!-- Allow users to select a category of data and search for a record within the database under that category -->
     <head>
-        {% if page_type == 'add' %}
+        <link 
+            rel="stylesheet" 
+            href="{{ url_for('static', filename='styles/style.css') }}"
+        >
+        {% if page_type == 'view' %}
             <title>View</title>
 
-        {% elif page_type == 'new' %}
-            <title>View {{ form_data['type'] }}</title>
-
-        {% elif page_type == 'confirm' %}
-            <title>Confirm {{ form_data['type'] }}</title>
+        {% elif page_type == 'search' %}
+            <title>Search {{ form_data['type'] }}</title>
 
         {% else %}
-            <title>Success</title>
+            <title>Result</title>
         {% endif %}
     </head>
     
     <body>
+        <div class="header">
+          <h1><a href="/">CCA Record Manager</a></h1>
+        </div>
+        
+        <div class="text_box">
+            <box_header>View</box_header>
+            <tagline>Please choose the item you want to view</tagline>
+        </div>
+        
         {% if page_type == 'view' %}
             <h2>View</h2>
             <form
@@ -70,7 +80,7 @@
                 <input type='submit' value='View Activities'>
             </form>
         
-        <a href='/'>Return</a>
+            <a href='/'>Return</a>
         
         {% elif page_type == 'search' %}
             <h2>Search {{ form_data['type'] }}</h2>
@@ -93,6 +103,7 @@
                             type='text'
                             name='{{ key }}'
                             value='{{value}}'
+                            required
                         />
                     {% endif %}
                 {% endfor %}
