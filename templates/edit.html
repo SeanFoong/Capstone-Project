@@ -1,7 +1,29 @@
 <html>
 <!-- Allow users to select a field and update it for a particular student -->
     <head>
-       <title>Edit</title> 
+        <link 
+            rel="stylesheet" 
+            href="{{ url_for('static', filename='styles/style.css') }}"
+        >
+        {% if page_type == 'edit' %}
+            <title>View</title>
+
+        {% elif page_type == 'search' %}
+            <title>Search {{ form_data['type'] }}</title>
+
+        {% elif page_type == 'error' %}
+            <title>{{ form_data['type'] }} not found</title>
+        
+        {% elif page_type == 'result' %}
+            <title>Result</title>
+
+        {% elif page_type == 'confirm' %}
+            <title>Confirm Edit</title>
+
+        {% else %}
+            <title>{{ form_data['type'] }} Successfully Edited</title>
+
+        {% endif %}
     </head>
     <body>
         {% if page_type == 'edit' %}
@@ -35,33 +57,33 @@
                 <a href='/'>Return</a>
 
         {% elif page_type == 'search' %}        
-        <h2>Search {{ form_data['type'] }}</h2>
-            <form
-                action="{{ form_meta['action'] }}"
-                method="{{ form_meta['method'] }}"
-            >
-                {% for key, value in form_data.items() %}
-                    {% if key == 'type' %}
-                        <input
-                            id='{{ key }}'
-                            type='hidden'
-                            name='{{ key }}'
-                            value='{{ value }}'
-                        />
-                    {% else %}
-                        <label for='{{ key }}'>{{ key }}:</label>
-                        <input
-                            id='{{ key }}'
-                            type='text'
-                            name='{{ key }}'
-                            value='{{value}}'
-                        /><br />
-                    {% endif %}
-                {% endfor %}
-                        
-                <input type='submit' value='Search'>
-            </form>
-            <a href='/edit'>Return</a>
+            <h2>Search {{ form_data['type'] }}</h2>
+                <form
+                    action="{{ form_meta['action'] }}"
+                    method="{{ form_meta['method'] }}"
+                >
+                    {% for key, value in form_data.items() %}
+                        {% if key == 'type' %}
+                            <input
+                                id='{{ key }}'
+                                type='hidden'
+                                name='{{ key }}'
+                                value='{{ value }}'
+                            />
+                        {% else %}
+                            <label for='{{ key }}'>{{ key }}:</label>
+                            <input
+                                id='{{ key }}'
+                                type='text'
+                                name='{{ key }}'
+                                value='{{value}}'
+                            /><br />
+                        {% endif %}
+                    {% endfor %}
+                            
+                    <input type='submit' value='Search'>
+                </form>
+                <a href='/edit'>Return</a>
 
         {% elif page_type == 'error' %}
             <h2>{{ form_data['type'] }} cannot be found</h2>
