@@ -1,5 +1,9 @@
 <html>
     <head>
+        <link 
+            rel="stylesheet" 
+            href="{{ url_for('static', filename='styles/style.css') }}"
+        >
         {% if page_type == 'add' %}
             <title>Add</title>
 
@@ -16,8 +20,16 @@
     
     <body>
 <!-- need to tidy up the input boxes and the confirmation page probably with css -->
+        <div class="header">
+          <h1><a href="/">CCA Record Manager</a></h1>
+        </div>
+        
+        <div class="text_box">
+            <box_header>Add</box_header>
+            <tagline>Please choose the item you want to add.</tagline>
+        </div>
+        
         {% if page_type == 'add' %}
-            <h2>Add</h2>
             <form
                 action="{{ form_meta['action'] }}"
                 method="{{ form_meta['method'] }}"
@@ -43,8 +55,7 @@
                 />
                 <input type='submit' value='Add Activity'>
             </form>
-        
-            <a href='/'>Return</a>
+
         
         {% elif page_type == 'new' %}
             <h2>Add {{ form_data['type'] }}</h2>
@@ -67,6 +78,7 @@
                             type='text'
                             name='{{ key }}'
                             value='{{ value }}'
+                            required
                         /><br />
                     {% endif %}
                 {% endfor %}

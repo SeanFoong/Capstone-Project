@@ -8,6 +8,8 @@ def id(value):
 
     
 def name(value):
+    value = value.replace(' ', '')
+
     if isinstance(value, str) and value.isalpha():
         return True
     else:
@@ -15,6 +17,8 @@ def name(value):
 
 
 def class_name(value):
+    value = int(value)
+    
     if isinstance(value, int):
         return 1000 <= value <= 9999
     else:
