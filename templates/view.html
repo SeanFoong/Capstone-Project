@@ -111,6 +111,23 @@
                 <input type='submit' value='Search'>
             </form>
             <a href='/view'>Return</a>
+
+        {% elif page_type == 'error' %}
+            <h2>{{ form_data['type'] }} cannot be found</h2>
+            <form
+                action='/view?search'
+                method='POST'
+            >
+                <input
+                    id='type'
+                    type='hidden'
+                    name='type'
+                    value="{{ form_data['type'] }}"
+                />
+                <input type='submit' value='Search Again'>
+            </form>
+            <a href='/view'>Search Another</a><br />
+            <a href='/'>Return</a>
         
         {% else %}
             <table>

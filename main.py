@@ -16,7 +16,6 @@ StudentActivityDB = StudentActivity()
 def splash():
   return render_template('splash.html')
 
-
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     """Allow users to select a category of data and 
@@ -176,21 +175,15 @@ def view():
                     form_data['Class'] = data[5]
                     
                 else: 
-                    form_data['Student Name'] = 'Cannot be found'
-                    html = render_template('view.html',      
-                                   page_type='search',
-                                   form_meta={'action':'/view?search',
-                                              'method':'POST'},
-                                   form_data=form_data)
+                    html = render_template('view.html', 
+                                           page_type='error',
+                                           form_data=form_data)
                     return html
                 
             else:
-                form_data['Student Name'] = 'Invalid'
-                html = render_template('view.html',      
-                               page_type='search',
-                               form_meta={'action':'/view?search',
-                                          'method':'POST'},
-                               form_data=form_data)
+                html = render_template('view.html', 
+                                       page_type='error',
+                                       form_data=form_data)
                 return html
                 
         elif form_data['type'] == 'Class':
@@ -201,47 +194,35 @@ def view():
                 if data is not None:
                     form_data['Level'] = data[2]
                 else: 
-                    form_data['Class Name'] = 'Cannot be found'
-                    html = render_template('view.html',      
-                                   page_type='search',
-                                   form_meta={'action':'/view?search',
-                                              'method':'POST'},
-                                   form_data=form_data)
+                    html = render_template('view.html', 
+                                           page_type='error',
+                                           form_data=form_data)
                     return html
                 
             else:
-                form_data['Class Name'] = 'Invalid'
-                html = render_template('view.html',      
-                               page_type='search',
-                               form_meta={'action':'/view?search',
-                                          'method':'POST'},
-                               form_data=form_data)
+                html = render_template('view.html', 
+                                       page_type='error',
+                                       form_data=form_data)
                 return html
                 
         elif form_data['type'] == 'Club':
             if validate.name(form_data['Club Name']):
                 club_name = form_data['Club Name']
                 data = ClubDB.find(club_name)
-#eait wait try pull to m ain see if got conflictok i commit
+
                 if data is not None:
                     form_data['id'] = data[0]
                     
                 else: 
-                    form_data['Club Name'] = 'Cannot be found'
-                    html = render_template('view.html',      
-                                   page_type='search',
-                                   form_meta={'action':'/view?search',
-                                              'method':'POST'},
-                                   form_data=form_data)
+                    html = render_template('view.html', 
+                                           page_type='error',
+                                           form_data=form_data)
                     return html
                 
             else:
-                form_data['Club Name'] = 'Invalid'
-                html = render_template('view.html',      
-                               page_type='search',
-                               form_meta={'action':'/view?search',
-                                          'method':'POST'},
-                               form_data=form_data)
+                html = render_template('view.html', 
+                                       page_type='error',
+                                       form_data=form_data)
                 return html
 
         elif form_data['type'] == 'Activity':
@@ -257,21 +238,15 @@ def view():
                     form_data['Description'] = data[4]
                     
                 else: 
-                    form_data['Activity Name'] = 'Cannot be found'
-                    html = render_template('view.html',      
-                                   page_type='search',
-                                   form_meta={'action':'/view?result',
-                                              'method':'POST'},
-                                   form_data=form_data)
+                    html = render_template('view.html', 
+                                           page_type='error',
+                                           form_data=form_data)
                     return html
                 
             else:
-                form_data['Activity Name'] = 'Invalid'
-                html = render_template('view.html',      
-                               page_type='search',
-                               form_meta={'action':'/view?result',
-                                          'method':'POST'},
-                               form_data=form_data)
+                html = render_template('view.html', 
+                                       page_type='error',
+                                       form_data=form_data)
                 return html
     
         html = render_template('view.html',
