@@ -1,5 +1,7 @@
 """SQL Commands"""
 
+# functions for creating the tables in sql
+
 CREATE_STUDENT = """
 CREATE TABLE IF NOT EXISTS Student(
     id INTEGER,
@@ -91,7 +93,8 @@ CREATE TABLE IF NOT EXISTS Participation(
 ); """
 
 
-# named parameters or parameterised insertion
+# functions parameterised insertion for the different tables
+
 INSERT_STUDENT = """
 INSERT INTO Student VALUES (?, ?, ?, ?, ?, ?)
 ;"""
@@ -115,4 +118,3 @@ INSERT INTO Club VALUES (?, ?)
 INSERT_ACTIVITY = """
 INSERT INTO Activity VALUES (?, ?, ?, ?, ?)
 """
-

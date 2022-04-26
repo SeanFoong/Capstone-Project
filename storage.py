@@ -25,14 +25,15 @@ class Collections:
                 result = cur.fetchone()
             elif kwargs.get('fetchall'):
                 result = cur.fetchall()
+                
             conn.commit()
             # conn.close() is automatically called
         return result
 
 
     def update(self, data_updated, data_checked): 
-        # Update by checking whether the name matches and changing the student name
-        query = """UPDATE """ + self.table + """ SET name = ? WHERE name = ?"""
+        """Update by checking whether the name matches and changing the respective name"""
+        query = """UPDATE """ + self.table + """ SET name = ? WHERE name = ?;"""
         param = (data_updated, data_checked)
         self.execute(query, param)
 
@@ -49,7 +50,25 @@ class Collections:
         query = """SELECT * FROM """ + self.table + """ WHERE name = ?;"""
         param = (value,)
         result = self.execute(query, param, fetchone=True)
-        return result
+        
+        if result is None: # record is not found
+            return result
+
+        # get the column names in the table
+        col_query = """SELECT * FROM """ + self.table 
+        with sqlite3.connect(self.database) as conn:
+            cur = conn.execute(col_query)
+            col_names = list(map(lambda x: x[0], cur.description)) 
+
+        index = 0
+        record = {} # record[col_names] = result[idx]
+        
+        # inserting results into the dict
+        for col in col_names: 
+            record[col] = result[index]
+            index += 1
+            
+        return record # return a dict 
 
 
     def findID(self, value):  
@@ -87,7 +106,7 @@ class Student(Collections):
 
     
     def insert(self, record: dict):
-        if not self.find(record['name']):
+        if not self.find(record['name']): # checks if student name exist
             self.execute(sql.INSERT_STUDENT, tuple(record.values()))
 
 
@@ -106,7 +125,7 @@ class Class(Collections):
 
     
     def insert(self, record: dict):
-        if not self.find(record['name']):
+        if not self.find(record['name']): # checks if class name exist
             self.execute(sql.INSERT_CLASS, tuple(record.values()))
 
         
@@ -125,7 +144,7 @@ class Subject(Collections):
 
     
     def insert(self, record: dict):
-        if not self.find(record['name']):
+        if not self.find(record['name']): # checks if subject name exist
             self.execute(sql.INSERT_SUBJECT, tuple(record.values()))
 
         
@@ -148,7 +167,7 @@ class Club(Collections):
         else: # if there are items in the table
             inserted_pos = self.getMaxID() + 1
             
-        if not self.find(record['name']):
+        if not self.find(record['name']): # checks if club name exist
             record_final = {'id': inserted_pos} # new inserted pos
             record_final.update(record) # insert id into front of dict
             self.execute(sql.INSERT_CLUB, tuple(record_final.values()))
@@ -195,7 +214,22 @@ class Membership(Collections):
                 """ WHERE student_id = ? and club_id = ?;"""
         param = (student_id, club_id)
         result = self.execute(query, param, fetchone=True)
-        return result
+
+        if result is None: # record is not found
+            return result
+
+        col_query = """SELECT * FROM """ + self.table # get col names in table
+        conn = sqlite3.connect(self.database)
+        cursor = conn.execute(col_query)
+        col_names = list(map(lambda x: x[0], cursor.description)) 
+
+        record = {} # insert record[col_names] = result into dict
+        index = 0
+        for col in col_names:
+            record[col] = result[index]
+            index += 1
+            
+        return record # return a dict 
 
 
     def update(self, role, student_id, club_id): 
@@ -221,7 +255,22 @@ class Participation(Collections):
                 """ WHERE student_id = ? and club_id = ? and activity_id = ?;"""
         param = (student_id, club_id, activity_id)
         result = self.execute(query, param, fetchone=True)
-        return result
+        
+        if result is None: # record is not found
+            return result
+
+        col_query = """SELECT * FROM """ + self.table # get col names in table
+        conn = sqlite3.connect(self.database)
+        cursor = conn.execute(col_query)
+        col_names = list(map(lambda x: x[0], cursor.description)) 
+
+        record = {} # insert record[col_names] = result into dict
+        index = 0
+        for col in col_names:
+            record[col] = result[index]
+            index += 1
+            
+        return record # return a dict 
 
     
     def update(self, category, role, award, hours, student_id, club_id, activity_id): 
