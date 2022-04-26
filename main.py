@@ -426,7 +426,7 @@ def edit():
                     form_data=form_data,
                 )
 
-            else:     # If membership not in db
+            else:  # If membership not in db
                 html = render_template(
                     'edit.html',
                     page_type='search',
@@ -452,9 +452,20 @@ def edit():
                                'method':'POST'},
                     form_data=form_data,                    
                 )  
+ 
+            # If membership not in db
+            elif membership_data is None: 
+                html = render_template(
+                    'edit.html',
+                    page_type='search',
+                    form_meta={'action':'edit?search',
+                               'method':'POST'},
+                    form_data=form_data,
+                    participation_absent=f'{student_name} Not In {club_name}'
+                )
 
             # Checks if membership in db but student not in activity
-            elif membership_data is not None:
+            else:
                 html = render_template(
                     'edit.html',
                     page_type='search',
@@ -463,16 +474,7 @@ def edit():
                     form_data=form_data,
                     participation_absent=f'{student_name} Not In {activity_name}'
                 )
-
-            else:  # If membership not in db
-                html = render_template(
-                    'edit.html',
-                    page_type='result',
-                    form_meta={'action':'edit?search',
-                               'method':'POST'},
-                    form_data=form_data,
-                    participation_absent=f'{student_name} Not In {club_name}'
-                )
+                
 
     elif 'confirm' in request.args:
         student_name = form_data['Student Name']
