@@ -82,6 +82,10 @@
                     {% endif %}
                 {% endfor %}
                 
+                {% for field in invalid %}
+                    <p>{{ field }} is invalid</p>
+                {% endfor %}
+                
                 <input type='submit' value='Submit'>
             </form>
         

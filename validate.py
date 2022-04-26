@@ -1,4 +1,5 @@
 """Validate Functions"""
+import storage
 
 def id(value):
     if isinstance(value, int):
@@ -63,3 +64,4 @@ def subject_level(value):
 
 def description(value):
     return isinstance(value, str)
+

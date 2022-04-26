@@ -1,14 +1,13 @@
 from flask import Flask, render_template, request
-from storage import Club, Activity, StudentClub, StudentActivity
-from convert import convert
+from storage import Club, Activity, Membership, Participation
 import validate
 from data import StudentDB, ClassDB, SubjectDB, ClubDB
 
 app = Flask('app')
 
 ActivityDB = Activity()
-StudentClubDB = StudentClub()
-StudentActivityDB = StudentActivity()
+MembershipDB = Membership()
+ParticipationDB = Participation()
 
 
 @app.route('/')
@@ -24,12 +23,14 @@ def add():
     form_data = dict(request.form)
  
     if len(request.args) == 0:  # First page
-        html = render_template('add.html',
-                               page_type='add',
-                               form_meta={'action':'/add?new',
-                                          'method':'POST'})
+        html = render_template(
+            'add.html',
+            page_type='add',
+            form_meta={'action':'/add?new', 'method':'POST'},
+        )
+                                          
         
-    elif 'new' in request.args:
+    elif 'new' in request.args:    #First input 
         # Checks type chosen and sets data fields
         if form_data['type'] == 'Club':
             form_data['Club Name'] = ''
@@ -38,71 +39,72 @@ def add():
             form_data['Start Date'] = ''
             form_data['End Date'] = ''
             form_data['Description'] = ''
-            form_data['Club'] = ''
-            form_data['Category'] = ''
 
-        html = render_template('add.html',      
-                               page_type='new',
-                               form_meta={'action':'/add?confirm',
-                                          'method':'POST'},
-                               form_data=form_data)
+        html = render_template(
+            'add.html',      
+            page_type='new',
+            form_meta={'action':'/add?confirm', 'method':'POST'},
+            form_data=form_data,
+        )
                 
-    elif 'confirm' in request.args:
+    elif 'confirm' in request.args:    #Checking input for confirmation
         if form_data['type'] == 'Club':
             if validate.name(form_data['Club Name']):
-                pass
+                form_data['Club Name'] = form_data['Club Name'].title()
+                
             else:
-                form_data['Club Name'] = 'Invalid'
-                html = render_template('add.html',      
-                               page_type='new',
-                               form_meta={'action':'/add?edit',
-                                          'method':'POST'},
-                               form_data=form_data)
+                html = render_template(
+                    'add.html',      
+                    page_type='new',
+                    form_meta={'action':'/add?edit', 'method':'POST'},
+                    form_data=form_data,
+                    invalid = ['Student Name']
+                )
                 return html
+                
         else:
-            error = False
+            invalid = []
             
             if not validate.name(form_data['Activity Name']):
-                form_data['Activity Name'] = 'Invalid'
-                error = True
+                invalid.append('Activity Name')
             if not validate.date(form_data['Start Date']):
-                form_data['Start Date'] = 'Invalid'
-                error = True
+                invalid.append('Start Date')
             if not validate.date(form_data['End Date']):
-                form_data['End Date'] = 'Invalid'
-                error = True
+                invalid.append('End Date')
             if not validate.description(form_data['Description']):
-                form_data['Description'] = 'Invalid'
-                error = True
-            if not validate.name(form_data['Club']):
-                form_data['Club'] = 'Invalid'
-                error = True
-            if not validate.category(form_data['Category']):
-                form_data['Category'] = 'Invalid'
-                error = True
+                invalid.append('Description Name')
                 
-            if error:
-                html = render_template('add.html',      
-                               page_type='new',
-                               form_meta={'action':'/add?edit',
-                                          'method':'POST'},
-                               form_data=form_data)
+            if invalid:
+                html = render_template(
+                    'add.html',      
+                    page_type='new',
+                    form_meta={'action':'/add?edit', 'method':'POST'},
+                    form_data=form_data,
+                    invalid=invalid
+                )
                 return html
+
+            else:
+                form_data['Activity Name'] = form_data['Activity Name'].title()
+                form_data['Description'] = form_data['Description'].capitalize()
+                        
                 
-        html = render_template('add.html',
-                               page_type='confirm',
-                               form_meta={'action':'/add?success',
-                                          'method':'POST'},
-                               form_data=form_data)
+        html = render_template(
+            'add.html',
+            page_type='confirm',
+            form_meta={'action':'/add?success', 'method':'POST'},
+            form_data=form_data,
+        )
 
-    elif 'edit' in request.args:
-        html = render_template('add.html',
-                               page_type='new',
-                               form_meta={'action':'/add?confirm',
-                                          'method':'POST'},
-                               form_data=form_data)
+    elif 'edit' in request.args:#Editing input 
+        html = render_template(
+            'add.html',
+            page_type='new',
+            form_meta={'action':'/add?confirm', 'method':'POST'},
+            form_data=form_data,
+        )
 
-    else:
+    else:        #insertion into database
         record = {}
         
         if form_data['type'] == 'Club':
@@ -111,17 +113,20 @@ def add():
             ClubDB.insert(record) # Insert record into Club database
             
         else:
-            name = form_data['Activity Name']
-            record = {'name': name,
-                      'start_date': form_data['Start Date'], 
-                      'end_date': form_data['End Date'], 
-                      'description': form_data['Description']
-                     }
+            name = form_data['Activity Name'].title()
+            record = {
+                'name': name,
+                'start_date': form_data['Start Date'], 
+                'end_date': form_data['End Date'], 
+                'description': form_data['Description'],
+            }
             ActivityDB.insert(record) # Insert record into Activity database
             
-        html = render_template('add.html',
-                               page_type='success',
-                               name=name)
+        html = render_template(
+            'add.html',
+            page_type='success',
+            name=name,
+        )
     
     return html  # Renders page
 
@@ -133,13 +138,14 @@ def view():
 
     form_data = dict(request.form)
     
-    if len(request.args) == 0:
-        html = render_template('view.html',
-                               page_type='view',
-                               form_meta={'action':'/view?search',
-                                          'method':'POST'})
+    if len(request.args) == 0:   # First entry into /view
+        html = render_template(
+            'view.html',
+            page_type='view',
+            form_meta={'action':'/view?search', 'method':'POST'},
+        )
         
-    elif 'search' in request.args:
+    elif 'search' in request.args:      # After selection of category
         if form_data['type'] == 'Student':
             form_data['Student Name'] = ''
         elif form_data['type'] == 'Class':
@@ -149,19 +155,18 @@ def view():
         else:
             form_data['Activity Name'] = ''
         
-        html = render_template('view.html',
-                               page_type='search',
-                               form_meta={'action':'/view?result',
-                                          'method':'POST'},
-                               form_data=form_data)
+        html = render_template(
+            'view.html',
+            page_type='search',
+            form_meta={'action':'/view?result', 'method':'POST'},
+            form_data=form_data,
+        )
 
-    elif 'result' in request.args:
-        if form_data['type'] == 'Student':
-            student_name = form_data['Student Name']
-            data = StudentDB.find(student_name)
-
-            if validate.name(form_data['Student Name']):
-                student_name = form_data['Student Name']
+    elif 'result' in request.args:        # After input of data to be searched
+        if form_data['type'] == 'Student':     # If item to be searched is 'Student'
+            student_name = form_data['Student Name'].upper()
+            
+            if validate.name(student_name):   # Validation
                 data = StudentDB.find(student_name)
                 
                 if data is not None:  # Record present
@@ -170,84 +175,120 @@ def view():
                     form_data['Graduating year'] = data[4]
                     form_data['Class'] = data[5]
                     
-                else: 
-                    html = render_template('view.html', 
-                                           page_type='error',
-                                           form_data=form_data)
+                else:   # Record not present
+                    html = render_template(
+                        'view.html', 
+                        page_type='/view?search',
+                        form_meta={'action':'/view?result', 'method':'POST'},
+                        form_data=form_data,
+                        invalid=['Student Name']
+                    )
                     return html
                 
-            else:  # Invalid
-                html = render_template('view.html', 
-                                       page_type='error',
-                                       form_data=form_data)
+            else:   # Validation failure
+                html = render_template(
+                    'view.html', 
+                    page_type='/view?search',
+                    form_meta={'action':'/view?result', 'method':'POST'},
+                    form_data=form_data,
+                    invalid={'Student Name':'Input is invalid'}
+                )
                 return html
                 
-        elif form_data['type'] == 'Class':
-            if validate.class_name(form_data['Class Name']):
-                class_name = int(form_data['Class Name'])
+        elif form_data['type'] == 'Class':   # If item to be searched is 'Class'
+            class_name = form_data['Class Name']
+            
+            if validate.class_name(class_name):   # Validation
                 data = ClassDB.find(class_name)
 
-                if data is not None:
+                if data is not None:   # Record present
                     form_data['Level'] = data[2]
-                else: 
-                    html = render_template('view.html', 
-                                           page_type='error',
-                                           form_data=form_data)
+                    
+                else:    # Record not present
+                    html = render_template(
+                        'view.html', 
+                        page_type='/view?search',
+                        form_meta={'action':'/view?result', 'method':'POST'},
+                        form_data=form_data,
+                        invalid={'Class Name':'Cannot be found'}
+                    )
                     return html
                 
-            else:
-                html = render_template('view.html', 
-                                       page_type='error',
-                                       form_data=form_data)
+            else:   # Validation failure
+                html = render_template(
+                    'view.html', 
+                    page_type='/view?search',
+                    form_meta={'action':'/view?result', 'method':'POST'},
+                    form_data=form_data,
+                    invalid={'Class Name':'Input is invalid'}
+                )
                 return html
                 
-        elif form_data['type'] == 'Club':
-            if validate.name(form_data['Club Name']):
-                club_name = form_data['Club Name']
+        elif form_data['type'] == 'Club':    # If item to be searched is 'Club'
+            club_name = form_data['Club Name'].title()
+            
+            if validate.name(club_name):    # Validation
                 data = ClubDB.find(club_name)
-
-                if data is not None:
+                
+                if data is not None:   # Record present
                     form_data['id'] = data[0]
                     
-                else: 
-                    html = render_template('view.html', 
-                                           page_type='error',
-                                           form_data=form_data)
+                else:    # Record not present
+                    html = render_template(
+                        'view.html', 
+                        page_type='/view?search',
+                        form_meta={'action':'/view?result', 'method':'POST'},
+                        form_data=form_data,
+                        invalid={'Club Name':'Cannot be found'}
+                    )
                     return html
                 
-            else:
-                html = render_template('view.html', 
-                                       page_type='error',
-                                       form_data=form_data)
+            else:   # Validation failure
+                html = render_template(
+                    'view.html', 
+                    page_type='/view?search',
+                    form_meta={'action':'/view?result', 'method':'POST'},
+                    form_data=form_data,
+                    invalid={'Club Name':'Input is invalid'}
+                )
                 return html
               
-        else:
-            if validate.name(form_data['Activity Name']):
-                activity_name = form_data['Activity Name']
+        else:   # If item to be searched is 'Activity'
+            activity_name = form_data['Activity Name']
+            
+            if validate.name(activity_name):  # Validation
                 data = ActivityDB.find(activity_name)
-                
-                if data is not None:
-                    activity_name = form_data['Activity Name']
-                    data = ActivityDB.find(activity_name)
+
+                if data is not None:   # Record present
                     form_data['Start Date'] = data[2]
                     form_data['End Date'] = data[3]
                     form_data['Description'] = data[4]
                     
-                else: 
-                    html = render_template('view.html', 
-                                           page_type='error',
-                                           form_data=form_data)
+                else:     # Record not present
+                    html = render_template(
+                        'view.html', 
+                        page_type='/view?search',
+                        form_meta={'action':'/view?result', 'method':'POST'},
+                        form_data=form_data,
+                        invalid={'Activity Name':'Cannot be found'}
+                    )
                     return html
                 
-            else:
-                html = render_template('view.html', 
-                                       page_type='error',
-                                       form_data=form_data)
+            else:   # Validation failure
+                html = render_template(
+                    'view.html', 
+                    page_type='/view?search',
+                    form_meta={'action':'/view?result', 'method':'POST'},
+                    form_data=form_data,
+                    invalid={'Activity Name':'Input is invalid'}
+                )
                 return html
 
-        html = render_template('view.html',
-                               page_type='result',
-                               form_data=form_data)
+        html = render_template(     #?????????
+            'view.html',
+            page_type='result',
+            form_data=form_data,
+        )
 
     return html
 
@@ -258,92 +299,155 @@ def edit():
     within the database under that category, then edit that record."""
     form_data = dict(request.form)
 
-    if len(request.args) == 0:
-        html = render_template('edit.html',
-                               page_type='edit',
-                               form_meta={'action':'/edit?search',
-                                          'method':'POST'})
+    if len(request.args) == 0:   # First entry into /edit
+        html = render_template(
+            'edit.html',
+            page_type='edit',
+            form_meta={'action':'/edit?search', 'method':'POST'},
+        )
 
-    elif 'search' in request.args:
+    elif 'search' in request.args:    # After selection of category
         form_data['Student Name'] = ''
+        form_data['Club Name'] = ''
         
-        if form_data['type'] == 'Membership':
-            form_data['Club Name'] = ''
-        else:
+        if form_data['type'] == 'Participation':
             form_data['Activity Name'] = ''
         
-        html = render_template('edit.html',
-                               page_type='search',
-                               form_meta={'action':'/edit?result',
-                                          'method':'POST'},
-                               form_data=form_data)
-        
-    elif 'result' in request.args:
-        # Search database
+        html = render_template(
+            'edit.html',
+            page_type='search',
+            form_meta={'action':'/edit?result', 'method':'POST'},
+            form_data=form_data,
+        )
+    
+    elif 'result' in request.args:    # Search database
+        form_data['Student Name'] = form_data['Student Name'].upper()
         student_name = form_data['Student Name']
-        club_name = ''
-        activity_name = ''
-        student_id = StudentDB.findID(student_name)
-        
-        if student_id is not None: # Check if student exists in db
-            if form_data['type'] == 'Membership':
-                club_name = form_data['Club Name']
-                club_id = ClubDB.findID(club_name)
+        form_data['Club Name'] = form_data['Club Name'].title()
+        club_name = form_data['Club Name']
+        invalid = []
 
-                if club_id is not None:  # Checks if the club exists in db
-                    membership_data = StudentClubDB.find(student_id, club_id)
-                    
-                    if membership_data is not None: # Checks if student in club
-                        form_data['Role'] = membership_data[2]
+        if not validate.name(student_name): # Validation 
+            invalid.append('Student Name')
+        if not validate.name(club_name):
+            invalid.append('Club Name')
 
-                        html = render_template('edit.html',
-                                               page_type='result',
-                                               form_meta={'action':'edit?confirm',
-                                                          'method':'POST'},
-                                               form_data=form_data)
-                        return html
-
+        if form_data['type'] == 'Participation': # Validate for activity name in participation
+            form_data['Activity Name'] = form_data['Activity Name'].title()
+            activity_name = form_data['Activity Name']
             
-            elif form_data['type'] == 'Participation':
-                activity_name = form_data['Activity Name']
-                activity_id = ActivityDB.findID(activity_name)
-                
-                if activity_id is not None: # Checks if the activity exists in db
-                    participation_data = StudentActivityDB.find(student_id, activity_id)
-                    
-                    if participation_data is not None: # Checks if student is participant
-                        form_data['Category'] = participation_data[2]
-                        form_data['Role'] = participation_data[3]
-                        form_data['Award'] = participation_data[4]
-                        form_data['Hours'] = participation_data[5]
-                
-                        html = render_template('edit.html',
-                                               page_type='result',
-                                               form_meta={'action':'edit?confirm',
-                                                          'method':'POST'},
-                                               form_data=form_data)
-                        return html
+            if not validate.name(activity_name):
+                invalid.append('Activity Name')
 
-        html = render_template('edit.html',
-                               page_type='error',
-                               form_data=form_data)
-        return html
+        # breakpoint()
+
+        if invalid:
+            html = render_template(
+                'edit.html',      
+                page_type='search',
+                form_meta={'action':'/edit?result', 'method':'POST'},
+                form_data=form_data,
+                invalid=invalid
+            )
+            return html
+        
+        student_id = StudentDB.findID(student_name)
+        club_id = ClubDB.findID(club_name)
+
+        absent = []
+        if student_id is None: # Check if student exists in db
+            absent.append('Student Name')
+
+        if club_id is None:
+            absent.append('Club Name')
+
+        if form_data['type'] == 'Participation': # Validate for activity name in participation
+            activity_id = ActivityDB.findID(activity_name)
+            if activity_id is None:
+                absent.append('Activity Name')
+
+        if absent:
+            html = render_template(
+                'edit.html',      
+                page_type='search',
+                form_meta={'action':'/edit?result', 'method':'POST'},
+                form_data=form_data,
+                absent=absent
+            )
+            return html
+                
+        if form_data['type'] == 'Membership':
+            membership_data = MembershipDB.find(student_id, club_id)
+            
+            if membership_data is not None: # Checks if membership in db
+                form_data['Role'] = membership_data[2]
+
+                html = render_template(
+                    'edit.html',
+                    page_type='result',
+                    form_meta={'action':'edit?confirm', 'method':'POST'},
+                    form_data=form_data,
+                )
+                return html     
+
+            # else:
+            #     html = render_template(
+            #         'edit.html',
+            #         page_type='edit?error',
+            #         form_data=form_data,
+            #     )
+                
+        else:            
+            participation_data = ParticipationDB.find(student_id, club_id, activity_id)
+
+            if participation_data is not None: # Checks if the participation exists in db
+                form_data['Category'] = participation_data[2]
+                form_data['Role'] = participation_data[3]
+                form_data['Award'] = participation_data[4]
+                form_data['Hours'] = participation_data[5]
+        
+                html = render_template(
+                    'edit.html',
+                    page_type='result',
+                    form_meta={'action':'edit?confirm', 'method':'POST'},
+                    form_data=form_data,
+                )
+                return html   
+                
+            # else:
+            #     form_data['Activity Name'] = 'Cannot be Found'
+            #     html = render_template(
+            #         'edit.html',
+            #         page_type='result',
+            #         form_meta={'action':'edit?search', 'method':'POST'},
+            #         form_data=form_data,
+            #     )
+
+
+            #     else:
+            #         html = render_template(
+            #             'edit.html',
+            #             page_type='edit?error',
+            #             form_data=form_data,
+            #         )
+
 
     elif 'confirm' in request.args:
-        print('confirm', form_data)
         student_name = form_data['Student Name']
-        student_id = StudentDB.findID(student_name)
+        club_name = form_data['Club Name']
+        
+        student_id = StudentDB.findID(student_name)        
+        club_id = ClubDB.findID(club_name)
         old_data = {}
 
         if form_data['type'] == 'Membership':
-            club_name = form_data['Club Name']
-            club_id = ClubDB.findID(club_name)
-            curr_data = StudentClubDB.find(student_id, club_id)
+            curr_data = MembershipDB.find(student_id, club_id)
         else:
             activity_name = form_data['Activity Name']
             activity_id = ActivityDB.findID(activity_name)
-            curr_data = StudentActivityDB.find(student_id, activity_id)
+            curr_data = ParticipationDB.find(student_id, club_id, activity_id)
 
+        """Change tuple to dictionary"""
         counter = 0
         for key in form_data.keys():
             if key != 'type':
@@ -357,34 +461,39 @@ def edit():
                     old_data[key] = curr_data[counter]
                 counter += 1
 
-        html = render_template('edit.html',
-                               page_type='confirm',
-                               form_meta={'action':'edit?success',
-                                          'method':'POST'},
-                               form_data=form_data,
-                               old_data = old_data)
+        html = render_template(
+            'edit.html',
+            page_type='confirm',
+            form_meta={'action':'edit?success','method':'POST'},
+            form_data=form_data,
+            old_data = old_data,
+        )
         
     else:
         role = form_data['Role']
         student_name = form_data['Student Name']
+        club_name = form_data['Club Name']
         student_id = StudentDB.findID(student_name)
+        club_id = ClubDB.findID(club_name)
         
         if form_data['type'] == 'Membership':
-            club_name = form_data['Club Name']
-            club_id = ClubDB.findID(club_name)
-            StudentClubDB.update(club_id, role, student_id)
+            Membership.update(role, student_id, club_id)
+            
         else:
             activity_name = form_data['Activity Name']
+            activity_id = ActivityDB.findID(activity_name)
             category = form_data['Category']
             award = form_data['Award']
-            hours = form_data['Hours']
-            activity_id = ActivityDB.findID(activity_name)
-            StudentActivityDB.update(activity_id, category, role, award, hours, student_id) 
+            hours = form_data['Hours']            
+            ParticipationDB.update(category, role, award, hours, student_id, club_id, activity_id) 
 
         name = list(form_data.values())[1]
-        html = render_template('edit.html',
-                               page_type='success',
-                               name=name)    
+        html = render_template(
+            'edit.html',
+            page_type='success',
+            name=name,
+            type=type,
+        )
 
     return html
 

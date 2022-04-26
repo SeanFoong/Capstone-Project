@@ -162,7 +162,7 @@ class Activity(Collections):
     - End Date: str (optional)
     - Description: str
     """
-    # initialising the data table for activity
+    # Initialising the data table for activity
     def __init__(self):
         self.table = 'Activity'
         self.database = 'nyjc_computing.db'
@@ -181,48 +181,53 @@ class Activity(Collections):
             self.execute(sql.INSERT_ACTIVITY, tuple(record_final.values()))
 
 
-class StudentClub(Collections):
+class Membership(Collections):
     # initialising the data table for student club
     def __init__(self):
-        self.table = 'Student_Club'
+        self.table = 'Membership'
         self.database = 'nyjc_computing.db'
-        self.execute(sql.CREATE_STUDENT_CLUB)
+        self.execute(sql.CREATE_MEMBERSHIP)
 
     
     def find(self, student_id, club_id): 
         """Find the corresponding data with the student name provided"""
-        query = """SELECT * FROM """ + self.table + """ WHERE student_id = ? and club_id = ?;"""
+        query = """SELECT * FROM """ + self.table + \
+                """ WHERE student_id = ? and club_id = ?;"""
         param = (student_id, club_id)
         result = self.execute(query, param, fetchone=True)
         return result
 
 
-    def update(self, club_id, role, student_id): 
+    def update(self, role, student_id, club_id): 
         """Update by checking whether the club and the role for one student"""
-        query = """UPDATE """ + self.table + """ SET club_id = ?, role = ? WHERE student_id = ?"""
-        param = (club_id, role, student_id)
+        query = """UPDATE """ + self.table + \
+                """ SET role = ? 
+                WHERE student_id = ? and club_id = ?"""
+        param = (role, student_id, club_id)
         self.execute(query, param)
 
 
-class StudentActivity(Collections):
+class Participation(Collections):
     # initialising the data table for student activity
     def __init__(self):
-        self.table = 'Student_Activity'
+        self.table = 'Participation'
         self.database = 'nyjc_computing.db'
-        self.execute(sql.CREATE_STUDENT_ACTIVITY)
+        self.execute(sql.CREATE_PARTICIPATION)
 
     
-    def find(self, student_id, activity_id):  
+    def find(self, student_id, club_id, activity_id):  
         """Find the corresponding data with the student name provided"""
-        query = """SELECT * FROM """ + self.table + """ WHERE student_id = ? and activity_id = ?;"""
-        param = (student_id, activity_id)
+        query = """SELECT * FROM """ + self.table + \
+                """ WHERE student_id = ? and club_id = ? and activity_id = ?;"""
+        param = (student_id, club_id, activity_id)
         result = self.execute(query, param, fetchone=True)
         return result
 
     
-    def update(self, activity_id, category, role, award, hours, student_id): 
+    def update(self, category, role, award, hours, student_id, club_id, activity_id): 
         """Update by checking whether the activity and the role for one student"""
-        query = """UPDATE """ + self.table + """ SET activity_id = ?, category = ?, role = ?, award = ?, hours = ? WHERE student_id = ?"""
-        param = (activity_id, category, role, award, hours, student_id)
+        query = """UPDATE """ + self.table + \
+                """ SET category = ?, role = ?, award = ?, hours = ? 
+                WHERE student_id = ? and club_id = ? and activity_id = ?"""
+        param = (category, role, award, hours, student_id, club_id, activity_id)
         self.execute(query, param)
-

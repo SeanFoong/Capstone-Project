@@ -115,6 +115,11 @@ search for a record within the database under that category -->
                         
                 <input type='submit' value='Search'>
             </form>
+        
+            {% for key, value in invalid.items() %}
+                <p>{{ key }}{{ value }}</p>
+            {% endfor %}
+        
             <a href='/view'>Return</a>
 
         {% elif page_type == 'error' %}
