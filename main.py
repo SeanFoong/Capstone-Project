@@ -15,6 +15,7 @@ StudentActivityDB = StudentActivity()
 def splash():
     return render_template('splash.html')
 
+
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     """Allow users to select a category of data and 
@@ -45,10 +46,6 @@ def add():
                                form_meta={'action':'/add?confirm',
                                           'method':'POST'},
                                form_data=form_data)
-        
-    elif 'validate' in request.args:
-        pass
-                
                 
     elif 'confirm' in request.args:
         if form_data['type'] == 'Club':
@@ -63,30 +60,28 @@ def add():
                                form_data=form_data)
                 return html
         else:
-            no_error = True
+            error = False
             
             if not validate.name(form_data['Activity Name']):
                 form_data['Activity Name'] = 'Invalid'
-                no_error = False
+                error = True
             if not validate.date(form_data['Start Date']):
                 form_data['Start Date'] = 'Invalid'
-                no_error = False
+                error = True
             if not validate.date(form_data['End Date']):
                 form_data['End Date'] = 'Invalid'
-                no_error = False
+                error = True
             if not validate.description(form_data['Description']):
                 form_data['Description'] = 'Invalid'
-                no_error = False
+                error = True
             if not validate.name(form_data['Club']):
                 form_data['Club'] = 'Invalid'
-                no_error = False
+                error = True
             if not validate.category(form_data['Category']):
                 form_data['Category'] = 'Invalid'
-                no_error = False
+                error = True
                 
-            if no_error:
-                pass
-            else:
+            if error:
                 html = render_template('add.html',      
                                page_type='new',
                                form_meta={'action':'/add?edit',
@@ -128,7 +123,7 @@ def add():
                                page_type='success',
                                name=name)
     
-    return html  # Renders page what part of the table do you want changed?
+    return html  # Renders page
 
     
 @app.route('/view', methods=['GET', 'POST'])
@@ -164,24 +159,12 @@ def view():
         if form_data['type'] == 'Student':
             student_name = form_data['Student Name']
             data = StudentDB.find(student_name)
-            
-            if data is None: # Record not present
-                html = render_template('view.html', 
-                                       page_type='error',
-                                       form_data=form_data)
-                return html
-                
-            else:
-                form_data['Age'] = data[2]
-                form_data['Year enrolled'] = data[3]
-                form_data['Graduating year'] = data[4]
-                form_data['Class'] = data[5]
 
             if validate.name(form_data['Student Name']):
                 student_name = form_data['Student Name']
                 data = StudentDB.find(student_name)
                 
-                if data is not None:
+                if data is not None:  # Record present
                     form_data['Age'] = data[2]
                     form_data['Year enrolled'] = data[3]
                     form_data['Graduating year'] = data[4]
@@ -193,7 +176,7 @@ def view():
                                            form_data=form_data)
                     return html
                 
-            else:
+            else:  # Invalid
                 html = render_template('view.html', 
                                        page_type='error',
                                        form_data=form_data)
@@ -309,12 +292,9 @@ def edit():
 
                 if club_id is not None:  # Checks if the club exists in db
                     membership_data = StudentClubDB.find(student_id, club_id)
-                    print(student_id, club_id)
-                    print(membership_data) 
                     
                     if membership_data is not None: # Checks if student in club
-                        print(membership_data)
-                        form_data['Role'] = ''
+                        form_data['Role'] = membership_data[2]
 
                         html = render_template('edit.html',
                                                page_type='result',
@@ -332,10 +312,10 @@ def edit():
                     participation_data = StudentActivityDB.find(student_id, activity_id)
                     
                     if participation_data is not None: # Checks if student is participant
-                        form_data['Category'] = ''
-                        form_data['Role'] = ''
-                        form_data['Award'] = ''
-                        form_data['Hours'] = ''
+                        form_data['Category'] = participation_data[2]
+                        form_data['Role'] = participation_data[3]
+                        form_data['Award'] = participation_data[4]
+                        form_data['Hours'] = participation_data[5]
                 
                         html = render_template('edit.html',
                                                page_type='result',
