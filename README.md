@@ -1,5 +1,5 @@
 # Capstone Project
-Group Name: ?????
+Group Name: Group Name
 
 ## Project info:
 To create a CCA record updating system for the school.
@@ -12,4 +12,4 @@ To create a CCA record updating system for the school.
 4. Clarence (Data man)
 
 Still not done yet, it is WIP
-If you find any bugs, they are not bugs, there are features 😜 
+If you find any bugs, they are not bugs, they are features 😜 /s
