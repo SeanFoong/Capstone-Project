@@ -1,5 +1,7 @@
 """SQL Commands"""
 
+# functions for creating the tables in sql
+
 CREATE_STUDENT = """
 CREATE TABLE IF NOT EXISTS Student(
     id INTEGER,
@@ -64,8 +66,8 @@ CREATE TABLE IF NOT EXISTS Student_Subject(
 ); """
 
 
-CREATE_STUDENT_CLUB = """
-CREATE TABLE IF NOT EXISTS Student_Club(
+CREATE_MEMBERSHIP = """
+CREATE TABLE IF NOT EXISTS Membership(
     student_id INTEGER,
     club_id INTEGER,
     role TEXT DEFAULT 'Member',
@@ -75,21 +77,24 @@ CREATE TABLE IF NOT EXISTS Student_Club(
 ); """
 
 
-CREATE_STUDENT_ACTIVITY = """
-CREATE TABLE IF NOT EXISTS Student_Activity(
+CREATE_PARTICIPATION = """
+CREATE TABLE IF NOT EXISTS Participation(
     student_id INTEGER,
+    club_id INTEGER,
     activity_id INTEGER,
     category TEXT CHECK (category in ('Achievement', 'Enrichment', 'Leadership', 'Service')),
     role TEXT DEFAULT 'Participant',
     award TEXT,
     hours INTEGER,
-    PRIMARY KEY(student_id, activity_id),
+    PRIMARY KEY(student_id, club_id, activity_id),
     FOREIGN KEY(student_id) REFERENCES Student(id),
+    FOREIGN KEY(club_id) REFERENCES Club(id),
     FOREIGN KEY(activity_id) REFERENCES Activity(id)
 ); """
 
 
-# named parameters or parameterised insertion
+# functions parameterised insertion for the different tables
+
 INSERT_STUDENT = """
 INSERT INTO Student VALUES (?, ?, ?, ?, ?, ?)
 ;"""
@@ -113,4 +118,3 @@ INSERT INTO Club VALUES (?, ?)
 INSERT_ACTIVITY = """
 INSERT INTO Activity VALUES (?, ?, ?, ?, ?)
 """
-

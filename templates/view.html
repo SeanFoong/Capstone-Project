@@ -11,9 +11,6 @@ search for a record within the database under that category -->
 
         {% elif page_type == 'search' %}
             <title>Search {{ form_data['type'] }}</title>
-
-        {% elif page_type == 'error' %}
-            <title>{{ form_data['type'] }} not found</title>
         
         {% else %}
             <title>Result</title>
@@ -26,115 +23,110 @@ search for a record within the database under that category -->
           <h1><a href="/">CCA Record Manager</a></h1>
         </div>
         
-        <div class="text_box">
-            <box_header>View</box_header>
-            <tagline>Please choose the item you want to view</tagline>
-        </div>
-        
         {% if page_type == 'view' %}
-            <h2>View</h2>
-            <form
-                action="{{ form_meta['action'] }}"
-                method="{{ form_meta['method'] }}"
-            >
-                <input
-                    id='type'
-                    type='hidden'
-                    name='type'
-                    value='Student'
-                />
-                <input type='submit' value='View Students'>
-            </form>
+            <div class="text_box">
+                <box_header>View</box_header>
+                <tagline>Please choose the item you want to view</tagline>
+            </div>
 
-            <form
-                action="{{ form_meta['action'] }}"
-                method="{{ form_meta['method'] }}"
-            >
-                <input
-                    id='type'
-                    type='hidden'
-                    name='type'
-                    value='Class'
-                />
-                <input type='submit' value='View Classes'>
-            </form>
-
-            <form
-                action="{{ form_meta['action'] }}"
-                method="{{ form_meta['method'] }}"
-            >
-                <input
-                    id='type'
-                    type='hidden'
-                    name='type'
-                    value='Club'
-                />
-                <input type='submit' value='View Clubs'>
-            </form>
-
-            <form
-                action="{{ form_meta['action'] }}"
-                method="{{ form_meta['method'] }}"
-            >
-                <input
-                    id='type'
-                    type='hidden'
-                    name='type'
-                    value='Activity'
-                />
-                <input type='submit' value='View Activities'>
-            </form>
-        
-            <a href='/'>Return</a>
+                <form
+                    action="{{ form_meta['action'] }}"
+                    method="{{ form_meta['method'] }}"
+                >
+                    <input
+                        id='type'
+                        type='hidden'
+                        name='type'
+                        value='Student'
+                    />
+                    <input type='submit' value='View Students'>
+                </form>
+    
+                <form
+                    action="{{ form_meta['action'] }}"
+                    method="{{ form_meta['method'] }}"
+                >
+                    <input
+                        id='type'
+                        type='hidden'
+                        name='type'
+                        value='Class'
+                    />
+                    <input type='submit' value='View Classes'>
+                </form>
+    
+                <form
+                    action="{{ form_meta['action'] }}"
+                    method="{{ form_meta['method'] }}"
+                >
+                    <input
+                        id='type'
+                        type='hidden'
+                        name='type'
+                        value='Club'
+                    />
+                    <input type='submit' value='View Clubs'>
+                </form>
+    
+                <form
+                    action="{{ form_meta['action'] }}"
+                    method="{{ form_meta['method'] }}"
+                >
+                    <input
+                        id='type'
+                        type='hidden'
+                        name='type'
+                        value='Activity'
+                    />
+                    <input type='submit' value='View Activities'>
+                </form>
+            
+                <a href='/'>Return</a>
         
         {% elif page_type == 'search' %}
-            <h2>Search {{ form_data['type'] }}</h2>
-            <form
-                action="{{ form_meta['action'] }}"
-                method="{{ form_meta['method'] }}"
-            >
-                {% for key, value in form_data.items() %}
-                    {% if key == 'type' %}
-                        <input
-                            id='{{ key }}'
-                            type='hidden'
-                            name='{{ key }}'
-                            value='{{ value }}'
-                        />
-                    {% else %}
-                        <label for='{{ key }}'>{{ key }}:</label>
-                        <input
-                            id='{{ key }}'
-                            type='text'
-                            name='{{ key }}'
-                            value='{{value}}'
-                            required
-                        />
-                    {% endif %}
-                {% endfor %}
-                        
-                <input type='submit' value='Search'>
-            </form>
-            <a href='/view'>Return</a>
-
-        {% elif page_type == 'error' %}
-            <h2>{{ form_data['type'] }} cannot be found</h2>
-            <form
-                action='/view?search'
-                method='POST'
-            >
-                <input
-                    id='type'
-                    type='hidden'
-                    name='type'
-                    value="{{ form_data['type'] }}"
-                />
-                <input type='submit' value='Search Again'>
-            </form>
-            <a href='/view'>Search Another</a><br />
-            <a href='/'>Return</a>
+            <div class="text_box">
+            <box_header>View</box_header>
+            <tagline>Please input the name you want to search</tagline>
+            </div>
         
+            <h2>Search {{ form_data['type'] }}</h2>
+                <form
+                    action="{{ form_meta['action'] }}"
+                    method="{{ form_meta['method'] }}"
+                >
+                    {% for key, value in form_data.items() %}
+                        {% if key == 'type' %}
+                            <input
+                                id='{{ key }}'
+                                type='hidden'
+                                name='{{ key }}'
+                                value='{{ value }}'
+                            />
+                        {% else %}
+                            <label for='{{ key }}'>{{ key }}:</label>
+                            <input
+                                id='{{ key }}'
+                                type='text'
+                                name='{{ key }}'
+                                value='{{value}}'
+                                required
+                            />
+                        {% endif %}
+                    {% endfor %}
+
+                    <p>{{ invalid }}</p>
+                    
+                    <input type='submit' value='Search'>
+                </form>
+                       
+                <a href='/view'>Return</a>
+            
         {% elif page_type == 'result' %}
+            <div class="text_box">
+                <box_header>View</box_header>
+                <tagline>Result</tagline>
+            </div>
+        
             <table>
                 {% for key, value in form_data.items() %}
                     {% if key != 'type' %}
@@ -161,7 +153,6 @@ search for a record within the database under that category -->
         
             <a href='/view'>Search Another</a><br />
             <a href='/'>Return</a>
-            
         {% endif %}
     </body>
 </html>

@@ -60,6 +60,7 @@ tagline{
   border-left: 5px solid #CCCCCC; 
   border-radius: 25px;
   box-shadow: 2px 2px;
+  color: #159957
 }
     
 .button_left {
@@ -78,8 +79,8 @@ tagline{
     top: 40%;
     left:70%;
 }
-/* 
-input[name=submit_add_top]{
+
+input[id=add_button_top]{
   display: inline-block; 
   width: 800px;
   height: 200px;
@@ -96,6 +97,7 @@ input[name=submit_add_top]{
   border-left: 5px solid #CCCCCC; 
   border-radius: 25px;
   box-shadow: 2px 2px;
+  cursor: pointer;
   position: absolute;
     top: 40%;
     left:23%;
@@ -103,7 +105,7 @@ input[name=submit_add_top]{
 
 
 
-input[name=submit_add_bottom]{
+input[id=add_button_bottom]{
   display: inline-block; 
   width: 800px;
   height: 200px;
@@ -120,8 +122,8 @@ input[name=submit_add_bottom]{
   border-left: 5px solid #CCCCCC; 
   border-radius: 25px;
   box-shadow: 2px 2px;
+  cursor: pointer;
   position: absolute;
     top: 70%;
     left:23%;
 }
- */
