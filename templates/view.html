@@ -28,8 +28,10 @@ search for a record within the database under that category -->
                 <box_header>View</box_header>
                 <tagline>Please choose the item you want to view</tagline>
             </div>
-
+        
+            <div class="flex-box">
                 <form
+                    class='align'
                     action="{{ form_meta['action'] }}"
                     method="{{ form_meta['method'] }}"
                 >
@@ -39,10 +41,11 @@ search for a record within the database under that category -->
                         name='type'
                         value='Student'
                     />
-                    <input type='submit' value='View Students'>
+                    <input class = 'secondary_button' type='submit' value='View Students'>
                 </form>
     
                 <form
+                    class='align'
                     action="{{ form_meta['action'] }}"
                     method="{{ form_meta['method'] }}"
                 >
@@ -52,10 +55,11 @@ search for a record within the database under that category -->
                         name='type'
                         value='Class'
                     />
-                    <input type='submit' value='View Classes'>
+                    <input class = 'secondary_button' type='submit' value='View Classes'>
                 </form>
     
                 <form
+                    class='align'
                     action="{{ form_meta['action'] }}"
                     method="{{ form_meta['method'] }}"
                 >
@@ -65,10 +69,11 @@ search for a record within the database under that category -->
                         name='type'
                         value='Club'
                     />
-                    <input type='submit' value='View Clubs'>
+                    <input class = 'secondary_button' type='submit' value='View Clubs'>
                 </form>
     
                 <form
+                    class='align'
                     action="{{ form_meta['action'] }}"
                     method="{{ form_meta['method'] }}"
                 >
@@ -78,48 +83,54 @@ search for a record within the database under that category -->
                         name='type'
                         value='Activity'
                     />
-                    <input type='submit' value='View Activities'>
+                    <input class = 'secondary_button' type='submit' value='View Activities'>
                 </form>
-            
-                <a href='/'>Return</a>
+            </div>
+            <h3 style='text-align: center;'><a href='/'>Return</a></h3>
         
         {% elif page_type == 'search' %}
             <div class="text_box">
             <box_header>View</box_header>
             <tagline>Please input the name you want to search</tagline>
             </div>
-        
-            <h2>Search {{ form_data['type'] }}</h2>
-                <form
-                    action="{{ form_meta['action'] }}"
-                    method="{{ form_meta['method'] }}"
-                >
-                    {% for key, value in form_data.items() %}
-                        {% if key == 'type' %}
-                            <input
-                                id='{{ key }}'
-                                type='hidden'
-                                name='{{ key }}'
-                                value='{{ value }}'
-                            />
-                        {% else %}
+    
+            <form
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
+            >
+                <ul class='wrapper'>
+                {% for key, value in form_data.items() %}
+                    {% if key == 'type' %}
+                        <input
+                            id='{{ key }}'
+                            type='hidden'
+                            name='{{ key }}'
+                            value='{{ value }}'
+                        />
+                    {% else %}
+                        <li class="form-row">
                             <label for='{{ key }}'>{{ key }}:</label>
                             <input
                                 id='{{ key }}'
                                 type='text'
                                 name='{{ key }}'
                                 value='{{value}}'
+                                placeholder='Enter {{ key }} here'
                                 required
                             />
-                        {% endif %}
-                    {% endfor %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
 
-                    <p>{{ invalid }}</p>
-                    
+                <li class="form-row"><invalid>{{ invalid }}</invalid></li>
+                
+                <li class="form-row">
                     <input type='submit' value='Search'>
-                </form>
+                </li>
+            </form>
                        
-                <a href='/view'>Return</a>
+            <h3><a href='/view'>Return</a></h3>
+            </ul>
             
         {% elif page_type == 'result' %}
             <div class="text_box">
@@ -127,16 +138,16 @@ search for a record within the database under that category -->
                 <tagline>Result</tagline>
             </div>
         
-            <table>
+            <ul class='wrapper'>
                 {% for key, value in form_data.items() %}
                     {% if key != 'type' %}
-                        <tr>
-                            <th>{{ key }}:</th>
-                            <th>{{ value }}</th>
-                        </tr>
+                        <li class="form-row">
+                            <label>{{ key }}</label>
+                            <result>{{ value }}</result>
+                        </li>
                     {% endif %}
                 {% endfor %}
-            </table>
+            
 
             <form
                 action='/view?search'
@@ -148,11 +159,13 @@ search for a record within the database under that category -->
                     name='type'
                     value="{{ form_data['type'] }}"
                 />
-                <input type='submit' value='Search Again'>
+                <li class="form-row">
+                    <input type='submit' value='Search Again'>
+                </li>
             </form>
         
-            <a href='/view'>Search Another</a><br />
-            <a href='/'>Return</a>
+            <h3><a href='/'>Return</a></h3>
+            </ul>
         {% endif %}
     </body>
 </html>

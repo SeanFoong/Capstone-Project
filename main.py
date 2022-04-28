@@ -3,6 +3,9 @@ from storage import Club, Activity, Membership, Participation
 import validate
 from data import StudentDB, ClassDB, SubjectDB, ClubDB
 
+# TO DO:
+# FORMAT THE BLODDY INVALID INTERFACE
+
 app = Flask('app')
 
 ActivityDB = Activity()
