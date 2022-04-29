@@ -20,9 +20,21 @@
         {% elif page_type == 'confirm' %}
             <title>Confirm Edit</title>
 
-        {% else %}
+        {% elif page_type == 'success' %}
             <title>{{ name }} {{ type }} Successfully Edited</title>
 
+        {% elif page_type == 'add' %}
+            <title>Add</title>
+
+        {% elif page_type == 'add_new' %}
+            <title>Add {{ form_data['type'] }}</title>
+
+        {% elif page_type == 'add_confirm' %}
+            <title>Confirm Submission</title>
+
+        {% else %}
+            <title>Success</title>
+        
         {% endif %}
     </head>
     <body>
@@ -69,7 +81,7 @@
 
         {% elif page_type == 'search' %}
             <div class="text_box">
-                <box_header>Edit</box_header>
+                <box_header>Edit {{ form_data['type'] }}</box_header>
                 <tagline>Please input the data</tagline>
             </div>
         
@@ -88,8 +100,9 @@
                             value='{{ value }}'
                         />
                     {% else %}
-                        <label for='{{ key }}'>{{ key }}:</label>
                         <li class="form-row">
+                            <label for='{{ key }}'>{{ key }}:</label>
+                        
                             <input
                                 id='{{ key }}'
                                 type='text'
@@ -127,7 +140,7 @@
         
         {% elif page_type == 'result' %}
             <div class="text_box">
-                <box_header>Edit</box_header>
+                <box_header>Edit {{ form_data['type'] }}</box_header>
                 <tagline>Results</tagline>
             </div>
         
@@ -140,7 +153,9 @@
                          </li>
                     {% endif %}
                 {% endfor %}
-                
+
+                <hr>
+ 
                 <form
                     action="{{ form_meta['action'] }}"
                     method="{{ form_meta['method'] }}"
@@ -157,13 +172,14 @@
                                 value='{{ value }}'
                             >
                         {% else %}
-                            <label for='{{ key }}'>New {{ key }}:</label>
+                            
                             <li class="form-row">
+                                <label for='{{ key }}'>New {{ key }}</label>
                                 <input
                                     id='{{ key }}'
                                     type='text'
                                     name='{{ key }}'
-                                    value=''
+                                    value='{{ value }}'
                                     placeholder='Enter {{ key }} here'
                                     required
                                 >
@@ -200,7 +216,7 @@
                         
         {% elif page_type == 'confirm' %}
             <div class="text_box">
-                <box_header>Edit</box_header>
+                <box_header>Edit {{ form_data['type'] }}</box_header>
                 <tagline>Confirm edit</tagline>
             </div>
         
@@ -284,14 +300,227 @@
                 </form>
             </ul>
         
-        {% else %}
+        {% elif page_type == 'success' %}
             <div class="text_box">
-                <box_header>Edit</box_header>
+                <box_header>Edit {{ type }}</box_header>
                 <tagline>Successfully Edited!</tagline>
             </div>
         
             <ul class='wrapper'> 
                 <li><a href='/edit'>Edit Another</a></li>
+                <li><a href='/'>Return</a></li>
+            </ul>
+
+        {% elif page_type == 'add' %}
+            {% if form_data['type'] == 'Membership' %}
+                <div class="text_box">
+                    <box_header>Edit</box_header>
+                    <tagline>
+                        {{ form_data['Student Name'] }} Not In {{ form_data['Club Name'] }}<br />
+                        Add {{ form_data['Student Name'] }} To {{ form_data['Club Name'] }}?
+                    </tagline>
+                </div>
+
+            {% else %} 
+                <div class="text_box">
+                    <box_header>Edit</box_header>
+                    <tagline>
+                        {{ form_data['Student Name'] }} Not In 
+                        {{ form_data['Activity Name'] }}<br />
+                        Add {{ form_data['Student Name'] }} To {{ form_data['Activity Name'] }}?
+                    </tagline>
+                </div>
+        
+            {% endif %}
+
+            <ul class='wrapper'>
+                <form
+                    action='/edit?add_new'
+                    method='POST'
+                >
+                    {% for key, value in form_data.items() %}
+                        <input
+                            id='{{ key }}'
+                            type='hidden'
+                            name='{{ key }}'
+                            value='{{ value }}'
+                        />
+                    {% endfor %}
+    
+                    <li class="form-row">
+                        <input type='submit' value='Add'>
+                    </li>
+                </form>
+
+                <form id='edit_cancel'
+                    action='/edit?search'
+                    method='POST'
+                >
+                    {% if partic_not_member %}
+                        <input
+                            id='type'
+                            type='hidden'
+                            name='type'
+                            value='Participation'
+                        />
+
+                    {% else %}
+                        <input
+                            id='type'
+                            type='hidden'
+                            name='type'
+                            value="{{ form_data['type'] }}"
+                        />
+                    {% endif %}
+                        
+                   <li class="form-row">
+                        <input type='submit' value='Cancel'>
+                    </li>
+                </form>
+            </ul>
+            
+            
+        {% elif page_type == 'add_new' %}
+            <div class="text_box">
+                <box_header>Add {{ form_data['type'] }}</box_header>
+                <tagline>Add {{ form_data['type'] }}</tagline>
+            </div>
+        
+            <ul class='wrapper'>
+            {% for key, value in form_data.items() %}
+                {% if ( (key == 'Student Name') or
+                        (key == 'Club Name') or
+                        (key == 'Activity Name') ) %}
+                    <li class="form-row">
+                        <label>{{ key }}</label>    
+                        <result>{{ value }}</result>
+                     </li>
+                {% endif %}
+            {% endfor %}
+        
+            
+            <form
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
+            >
+                
+                {% for key, value in form_data.items() %}
+                    {% if ( (key == 'type') or 
+                            (key == 'Student Name') or
+                            (key == 'Club Name') or
+                            (key == 'Activity Name') ) %}
+                        <input
+                            id='{{ key }}'
+                            type='hidden'
+                            name='{{ key }}'
+                            value='{{ value }}'
+                        />
+                    {% else %}                        
+                        <li class="form-row">
+                            <label for='{{ key }}'>{{ key }}</label>
+                            <input
+                                id='{{ key }}'
+                                type='text'
+                                name='{{ key }}'
+                                value='{{ value }}'
+                                placeholder='Enter {{ key }} here'
+                                required
+                            />
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% for field in invalid %}
+                    <li class="form-row"><invalid>{{ field }} Invalid</invalid></li>
+                {% endfor %} 
+                    <li class="form-row"><invalid>{{ present }}</invalid></li>
+                
+                <li class="form-row">
+                    <input type='submit' value='Submit'>
+                </li>
+            </form>
+        
+            <h3 style=''><a href='/edit'>Cancel</a></h3>
+            </ul>
+        
+        {% elif page_type == 'add_confirm' %}
+            <div class="text_box">
+                <box_header>Add</box_header>
+                <tagline>Please confirm your submission</tagline>
+            </div>
+
+            <ul class='wrapper'>
+                {% for key, value in form_data.items() %}
+                    {% if key != 'type' %}
+                        <li class="form-row">
+                            <label>{{ key }}</label>    
+                            <result>{{ value }}</result>
+                         </li>
+                        
+                    {% endif %}
+                {% endfor %}
+
+            <form
+                action="{{ form_meta['action'] }}"
+                method="{{ form_meta['method'] }}"
+            >               
+                {% for key, value in form_data.items() %}
+                    {% if ( (key == 'type') or 
+                            (key == 'Student Name') or
+                            (key == 'Club Name') or
+                            (key == 'Activity Name') ) %}
+                        <input
+                            id='{{ key }}'
+                            type='hidden'
+                            name='{{ key }}'
+                            value='{{ value }}'
+                        >
+                    {% else %}
+                        <input
+                            id='{{ key }}'
+                            type='hidden'
+                            name='{{ key }}'
+                            value='{{ value }}'
+                        />
+                    {% endif %}
+                {% endfor %}
+                <li class="form-row">
+                    <input type='submit' value='Confirm'>
+                </li>
+            </form>
+        
+            <form
+                action='/edit?add_edit'
+                method='POST'
+            >
+                {% for key, value in form_data.items() %}
+                    <input
+                        id='{{ key }}'
+                        type='hidden'
+                        name='{{ key }}'
+                        value='{{ value }}'
+                    />
+                {% endfor %}
+                <li class="form-row">
+                    <input type='submit' value='Edit'>
+                </li>
+            </form>
+            </ul>
+            
+        {% else %}
+            <div class="text_box">
+                <box_header>Add {{ type }}</box_header>
+                <tagline>Success!</tagline>
+            </div>
+
+            <ul class='wrapper'> 
+                <li class="form-row">
+                    <label>Successfully Added!</label>    
+                    <result>{{ student_name }} To {{ entity_name }}</result>
+
+                </li>
+                
+                <li><a href='/edit'>Return To Edit</a></li>
                 <li><a href='/'>Return</a></li>
             </ul>
         

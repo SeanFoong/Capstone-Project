@@ -93,7 +93,24 @@ search for a record within the database under that category -->
             <box_header>View</box_header>
             <tagline>Please input the name you want to search</tagline>
             </div>
-    
+
+            <br />
+            <table>
+                <tr>
+                    {% for key, value in form_data.items() %}
+                        {% if key != 'type' %}
+                            <th>Available {{key}}s</th>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                
+                {% for name in all_values %}
+                <tr>
+                    <td>{{ name }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+
             <form
                 action="{{ form_meta['action'] }}"
                 method="{{ form_meta['method'] }}"
@@ -109,7 +126,7 @@ search for a record within the database under that category -->
                         />
                     {% else %}
                         <li class="form-row">
-                            <label for='{{ key }}'>{{ key }}:</label>
+                            <label for='{{ key }}'>{{ key }}</label>
                             <input
                                 id='{{ key }}'
                                 type='text'

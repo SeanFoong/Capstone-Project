@@ -1,6 +1,11 @@
 """Validation Functions"""
 
 def id(value):
+    """
+    Return
+    - True if value is more than 1
+    - False otherwise
+    """
     if value.isdigit():
         return int(value) >= 1
     else:
@@ -8,11 +13,21 @@ def id(value):
 
     
 def name(value):
+    """
+    Return
+    - True if value is of type str and consists of alphabets only
+    - False otherwise
+    """
     value = value.replace(' ', '')
     return value.isalpha()
 
 
 def age(value):
+    """
+    Return
+    - True if value between 16 and 20 (inclusive)
+    - False otherwise
+    """
     if value.isdigit():
         return 16 <= int(value) <= 20
     else:
@@ -20,6 +35,11 @@ def age(value):
 
 
 def class_name(value):
+    """
+    Return
+    - True if value is between 1000 and 9999 (inclusive)
+    - False otherwise
+    """
     if value.isdigit():
         return 1000 <= int(value) <= 9999
     else:
@@ -27,10 +47,20 @@ def class_name(value):
 
 
 def class_level(value):
+    """
+    Return
+    - True if value is 'JC1' or 'JC2'
+    - False otherwise
+    """
     return (value in ['JC1', 'JC2'])
 
 
 def subject_name(value):
+    """
+    Return
+    - True if value is of a valid subject
+    - False otherwise
+    """
     subjects = ['GP', 'MATH', 'FM', 'COMP', 'PHY',
                 'CHEM', 'ECONS', 'BIO', 'GEO', 'HIST',
                 'ELIT', 'ART', 'CLTRANS', 'CL', 'ML',
@@ -41,10 +71,20 @@ def subject_name(value):
 
 
 def subject_level(value):
+    """
+    Return
+    - True if value is 'H1', 'H2', 'H3'
+    - False otherwise
+    """
     return value in ['H1', 'H2', 'H3']
 
 
 def date(value):
+    """
+    Return
+    - True if value follows a certain format YYYY-MM-DD
+    - False otherwise
+    """
     if len(value) != 10:
         return False
 
@@ -63,15 +103,30 @@ def date(value):
 
 
 def description(value):
+    """
+    Return
+    - True if value is of type str
+    - False otherwise
+    """
     return isinstance(value, str)
 
 
 def category(value):
+    """
+    Return
+    - True if value is 'Achievement', 'Enrichment', 'Leadership', 'Service'
+    - False otherwise
+    """
     categoryList = ['Achievement', 'Enrichment', 'Leadership', 'Service']
     return value in categoryList
 
 
 def hours(value):
+    """
+    Return
+    - True if value is more than 0
+    - False otherwise
+    """
     if value.isdigit():
         return int(value) > 0
     else:

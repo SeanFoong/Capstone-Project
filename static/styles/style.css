@@ -154,8 +154,30 @@ invalid{
 }
 
 .form-row > button {
-    
    background: gray;
    color: white;
    border: 0;
+}
+
+table, td, th {
+  border: 1px solid;
+}
+
+th{
+    font-family: verdana;
+    color: #159957;
+    font-size: 20px;
+    font-weight: bold;
+    
+}
+
+td{
+    font-family: verdana;
+    text-align: center;
+}
+table {
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+  border-collapse: collapse;
 }

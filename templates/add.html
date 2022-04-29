@@ -83,19 +83,31 @@
                             name='{{ key }}'
                             value='{{ value }}'
                         />
+                    {% elif key == 'Start Date' or key == 'End Date' %}
+                        <li class="form-row">
+                            <label for='{{ key }}'>{{ key }}</label>
+                            <input
+                                id='{{ key }}'
+                                type='text'
+                                name='{{ key }}'
+                                value='{{ value }}'
+                                placeholder='Enter {{ key }} here in YYYY-MM-DD'
+                                required
+                            />
+                        </li>
+                    
                     {% else %}
-                        
-                            <li class="form-row">
-                                <label for='{{ key }}'>{{ key }}</label>
-                                <input
-                                    id='{{ key }}'
-                                    type='text'
-                                    name='{{ key }}'
-                                    value='{{ value }}'
-                                    placeholder='Enter {{ key }} here'
-                                    required
-                                />
-                            </li>
+                        <li class="form-row">
+                            <label for='{{ key }}'>{{ key }}</label>
+                            <input
+                                id='{{ key }}'
+                                type='text'
+                                name='{{ key }}'
+                                value='{{ value }}'
+                                placeholder='Enter {{ key }} here'
+                                required
+                            />
+                        </li>
                     {% endif %}
                 {% endfor %}
 
