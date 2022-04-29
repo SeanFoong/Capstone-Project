@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS Participation(
 ); """
 
 
-# functions parameterised insertion for the different tables
+# functions for parameterised insertion for the different tables
 
 INSERT_STUDENT = """
 INSERT INTO Student VALUES (?, ?, ?, ?, ?, ?)
@@ -102,19 +102,33 @@ INSERT INTO Student VALUES (?, ?, ?, ?, ?, ?)
 
 INSERT_CLASS = """
 INSERT INTO Class VALUES (?, ?, ?)
-"""
+;"""
 
 
 INSERT_SUBJECT = """
 INSERT INTO Subject VALUES (?, ?, ?)
-"""
+;"""
 
 
 INSERT_CLUB = """
 INSERT INTO Club VALUES (?, ?)
-"""
-
+;"""
 
 INSERT_ACTIVITY = """
 INSERT INTO Activity VALUES (?, ?, ?, ?, ?)
-"""
+;"""
+
+
+INSERT_STUDENT_SUBJECT = """
+INSERT INTO Student_subject VALUES (?, ?)
+;"""
+
+
+INSERT_MEMBERSHIP = """
+INSERT INTO Membership VALUES (?, ?, ?)
+;"""
+
+
+INSERT_PARTICIPATION = """
+INSERT INTO Participation VALUES (?, ?, ?, ?, ?, ?, ?)
+;"""

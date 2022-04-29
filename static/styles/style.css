@@ -4,126 +4,180 @@ body {
 }
 
 .header {
-  padding: 5px;
-  text-align: center;
-  font-size: 8px;
+    padding: 5px;
+    text-align: center;
+    font-size: 8px;
 }
 
 a {
-  color: #159957;
-  text-decoration: none;
+    color: #159957;
+    text-decoration: none;
+    font-family: verdana;
 }
 
-h1 {
-  color: black;
-  font-family: verdana;
+h3 {
+    text-decoration: underline;
 }
 
 box_header{
-  color: white;
-  font-size:50px;
-  font-weight: bold;
-  font-family: verdana;
+    color: white;
+    font-size:50px;
+    font-weight: bold;
+    font-family: verdana;
 }
 
 tagline{
-  color: white;
-  font-size:20px;
-  opacity: 0.7;
-  font-family: verdana;  
+    color: white;
+    font-size:20px;
+    opacity: 0.7;
+    font-family: verdana;  
+}
+
+invalid{
+    color:red;
 }
 
 .text_box {
-  height: 18%;
-  width: 100%;
-  padding-top: 3%;
-  padding-bottom: 3%;
-  background-image: linear-gradient(120deg, #155799, #159957);
-  text-align: center;
-  white-space: pre-line;
+    height: 18%;
+    width: 100%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    background-image: linear-gradient(120deg, #155799, #159957);
+    text-align: center;
+    white-space: pre-line;
+}
+.flex-box{
+    display: flex;
+    background-color: transparent;
+    flex-wrap: wrap;
+    flex-direction: column;
 }
 
-.button {
-  display: inline-block; 
-  width: 300px;
-  height: 200px;
-  font: bold 40px Arial;
-  text-align: center;  
-  vertical-align: middle;
-  line-height: 200px; 
-  text-decoration: none;
-  background-color: transparent;
-  color: #333333;
-  border-top: 5px solid #CCCCCC;
-  border-right: 5px solid #333333;
-  border-bottom: 5px solid #333333;
-  border-left: 5px solid #CCCCCC; 
-  border-radius: 25px;
-  box-shadow: 2px 2px;
-  color: #159957
+.flex-box_splash {
+    display: flex;
+    background-color: transparent;
+    flex-wrap: wrap;
+    justify-content: center;
+
 }
+
+.align {
+    align-self: center
+}
+
+.flex-box_splash > a {
+    margin: 10px;
+    display: block; 
+    width: 300px;
+    height: 200px;
+    font: bold 40px Arial;
+    text-align: center;  
+    vertical-align: middle;
+    line-height: 200px; 
+    text-decoration: none;
+    background-color: transparent;
+    color: #333333;
+    border-top: 5px solid #CCCCCC;
+    border-right: 5px solid #333333;
+    border-bottom: 5px solid #333333;
+    border-left: 5px solid #CCCCCC; 
+    border-radius: 25px;
+    box-shadow: 2px 2px;
+}
+
+.secondary_button {
+    margin: 10px;
+    display: block; 
+    width: 700px;
+    height: 200px;
+    font: bold 40px Arial;
+    text-align: center;  
+    vertical-align: middle;
+    line-height: 200px; 
+    text-decoration: none;
+    background-color: transparent;
+    color: #333333;
+    border-top: 5px solid #CCCCCC;
+    border-right: 5px solid #333333;
+    border-bottom: 5px solid #333333;
+    border-left: 5px solid #CCCCCC; 
+    border-radius: 25px;
+    box-shadow: 2px 2px;
+    cursor: pointer;
+}
+
+.wrapper {
+    background-color: transparent;
+    list-style-type: none;
+    padding-left: 300px;
+    padding-right: 300px;
+    border-radius: 3px;
+}
+
+.form-row {
+    display: flex;
+    justify-content: flex-end;
+    padding: .5em .5em .5em 0em;
+}
+
+.form-row > label {
+    font-family: verdana;
+    color: #159957;
+    font-size: 20px;
+    font-weight: bold;
+    padding: .5em 1em .5em 0;
+    flex: 1;
+}
+
+.form-row > input,
+.form-row > result {
+    flex: 2;
+}
+
+
+.form-row > input {
+    padding: .5em;
+}
+.form-row > button {
+    padding: .5em;
+    height: 20px;
+}
+
+.form-row > result {
+    border-style: solid;
+    border-width: 1px;
+    padding: .5em;
+    font-family: verdana;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.form-row > button {
+   background: gray;
+   color: white;
+   border: 0;
+}
+
+table, td, th {
+  border: 1px solid;
+}
+
+th{
+    font-family: verdana;
+    color: #159957;
+    font-size: 20px;
+    font-weight: bold;
     
-.button_left {
-  position: absolute;
-    top: 40%;
-    left:10%;
-
-}
-.button_mid {
-  position: absolute;
-    top: 40%;
-    left:40%;
-}
-.button_right {
-  position: absolute;
-    top: 40%;
-    left:70%;
 }
 
-input[id=add_button_top]{
-  display: inline-block; 
-  width: 800px;
-  height: 200px;
-  font: bold 40px Arial;
-  text-align: center;  
-  vertical-align: middle;
-  line-height: 200px; 
-  text-decoration: none;
-  background-color: transparent;
-  color: #333333;
-  border-top: 5px solid #CCCCCC;
-  border-right: 5px solid #333333;
-  border-bottom: 5px solid #333333;
-  border-left: 5px solid #CCCCCC; 
-  border-radius: 25px;
-  box-shadow: 2px 2px;
-  cursor: pointer;
-  position: absolute;
-    top: 40%;
-    left:23%;
+td{
+    font-family: verdana;
+    text-align: center;
 }
-
-
-
-input[id=add_button_bottom]{
-  display: inline-block; 
-  width: 800px;
-  height: 200px;
-  font: bold 40px Arial;
-  text-align: center;  
-  vertical-align: middle;
-  line-height: 200px; 
-  text-decoration: none;
-  background-color: transparent;
-  color: #333333;
-  border-top: 5px solid #CCCCCC;
-  border-right: 5px solid #333333;
-  border-bottom: 5px solid #333333;
-  border-left: 5px solid #CCCCCC; 
-  border-radius: 25px;
-  box-shadow: 2px 2px;
-  cursor: pointer;
-  position: absolute;
-    top: 70%;
-    left:23%;
+table {
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+  border-collapse: collapse;
 }
