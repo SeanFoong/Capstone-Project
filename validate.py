@@ -111,6 +111,26 @@ def description(value):
     return isinstance(value, str)
 
 
+def membership_role(value):
+    """
+    Return
+    - True if value is 'President', 'Vice President', 'Exco', 'Member'
+    - False otherwise
+    """
+    membership_roles = ['President', 'Vice President', 'Exco', 'Member']
+    return value in membership_roles
+
+
+def participation_role(value):
+    """
+    Return
+    - True if value is 'Participant', 'Facilitator', 'Overall In Charge'
+    - False otherwise
+    """
+    participant_roles = ['Participant', 'Facilitator', 'Overall In Charge']
+    return value in participant_roles
+    
+
 def category(value):
     """
     Return

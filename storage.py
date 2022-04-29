@@ -412,4 +412,3 @@ class Participation(Collections):
                 WHERE student_id = ? and club_id = ? and activity_id = ?"""
         param = (category, role, award, hours, student_id, club_id, activity_id)
         self.execute(query, param)
-
