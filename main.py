@@ -41,7 +41,6 @@ def add():
             form_data['Start Date'] = ''
             form_data['End Date'] = ''
             form_data['Description'] = ''
-        print(form_data)
         html = render_template(
             'add.html',      
             page_type='new',
@@ -640,7 +639,6 @@ def edit():
                 invalid.append('Hours')
 
             if invalid:  # Invalid activity data
-                print(form_data)
                 html = render_template(
                     'edit.html',      
                     page_type='add_new',

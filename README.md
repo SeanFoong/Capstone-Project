@@ -11,5 +11,4 @@ To create a CCA record updating system for the school.
 3. Justen (Senior dev)
 4. Clarence (Data man)
 
-Finished on 29/4/2022, 10.00pm
-~~If you find any bugs, they are not bugs, they are features 😜~~
+Finished on 29/4/2022, 11.00pm.

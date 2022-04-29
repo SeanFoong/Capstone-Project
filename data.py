@@ -1,5 +1,5 @@
 """
-Code to append data to the database
+Code to add data to the database if it is not present
 """
 
 import csv
@@ -19,7 +19,7 @@ def import_student():
 
 
 def import_class():
-    with open('csv/class.csv', 'r') as f: # convert cca data into a list of dict
+    with open('csv/class.csv', 'r') as f: 
         dictreader = csv.DictReader(f)
         for ordered_dict in dictreader:
             ordered_dict['id'] = int(ordered_dict['id'])
@@ -29,7 +29,7 @@ def import_class():
 
 
 def import_subject():
-    with open('csv/subject.csv', 'r') as f: # convert subject data into a list of dict
+    with open('csv/subject.csv', 'r') as f: 
         dictreader = csv.DictReader(f)
         for ordered_dict in dictreader:
             ordered_dict['id'] = int(ordered_dict['id'])
@@ -39,7 +39,7 @@ def import_subject():
 
 
 def import_club():
-    with open('csv/club.csv', 'r') as f: # convert club data into a list of dict
+    with open('csv/club.csv', 'r') as f: 
         dictreader = csv.DictReader(f)
         for ordered_dict in dictreader:
             ordered_dict['id'] = int(ordered_dict['id'])
@@ -48,12 +48,12 @@ def import_club():
 
 
 def import_student_subject():
-    with open('csv/student_subject.csv', 'r') as f: # convert club data into a list of dict
+    with open('csv/student_subject.csv', 'r') as f: 
         dictreader = csv.DictReader(f)
         for ordered_dict in dictreader:
             ordered_dict['student_id'] = int(ordered_dict['student_id'])
             ordered_dict['subject_id'] = ordered_dict['subject_id']
-            StudentSubjectDB.insert(ordered_dict) # insert club records
+            StudentSubjectDB.insert(ordered_dict) # insert student subject records records
 
             
 # initialisation of the databases

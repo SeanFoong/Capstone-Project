@@ -415,7 +415,33 @@
                             name='{{ key }}'
                             value='{{ value }}'
                         />
-                    {% else %}                        
+                    {% elif key == 'Role' %}                        
+                        <li class="form-row">
+                            <label for='{{ key }}'>{{ key }}</label>
+                            <input
+                                id='{{ key }}'
+                                type='text'
+                                name='{{ key }}'
+                                value='{{ value }}'
+                                placeholder='Enter {{ key }} here (President/Vice-President/Exco/Member)'
+                                required
+                            />
+                        </li>
+                    {% elif key == 'Category' %}                        
+                        <li class="form-row">
+                            <label for='{{ key }}'>{{ key }}</label>
+                            <input
+                                id='{{ key }}'
+                                type='text'
+                                name='{{ key }}'
+                                value='{{ value }}'
+                                placeholder='Enter {{ key }} here 
+                                             (Achievement/Enrichment/Leadership/Service)'
+                                required
+                            />
+                        </li>
+                
+                    {% else %}
                         <li class="form-row">
                             <label for='{{ key }}'>{{ key }}</label>
                             <input
@@ -427,6 +453,7 @@
                                 required
                             />
                         </li>
+                
                     {% endif %}
                 {% endfor %}
 
