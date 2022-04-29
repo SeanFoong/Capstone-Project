@@ -3,9 +3,6 @@ from storage import Club, Activity, Membership, Participation
 import validate
 from data import StudentDB, ClassDB, SubjectDB, ClubDB
 
-# TO DO:
-# FORMAT THE BLODDY INVALID INTERFACE
-
 app = Flask('app')
 
 ActivityDB = Activity()
@@ -174,20 +171,20 @@ def view():
     elif 'search' in request.args:      # After selection of category
         if form_data['type'] == 'Student':
             form_data['Student Name'] = ''
-            all_values=StudentDB.findAll()
+            all_values = StudentDB.findAll()            
             
         elif form_data['type'] == 'Class':
             form_data['Class Name'] = ''
-            all_values=ClassDB.findAll()
+            all_values = ClassDB.findAll()
             
         elif form_data['type'] == 'Club':
             form_data['Club Name'] = ''
-            all_values=ClubDB.findAll()
+            all_values = ClubDB.findAll()
             
         else:
             form_data['Activity Name'] = ''
-            all_values=ActivityDB.findAll()
-
+            all_values = ActivityDB.findAll()
+            
         html = render_template(
             'view.html',
             page_type='search',
@@ -218,7 +215,8 @@ def view():
                         form_meta={'action':'/view?result',
                                    'method':'POST'},
                         form_data=form_data,
-                        invalid='Student Name Not Found'
+                        invalid='Student Name Not Found',
+                        all_values=StudentDB.findAll()
                     )
                     return html
                 
@@ -229,7 +227,8 @@ def view():
                     form_meta={'action':'/view?result',
                                'method':'POST'},
                     form_data=form_data,
-                    invalid='Student Name Invalid'
+                    invalid='Student Name Invalid',
+                    all_values=StudentDB.findAll()
                 )
                 return html
                 
@@ -249,7 +248,8 @@ def view():
                         form_meta={'action':'/view?result',
                                    'method':'POST'},
                         form_data=form_data,
-                        invalid='Class Name Not Found'
+                        invalid='Class Name Not Found',
+                        all_values=ClassDB.findAll()
                     )
                     return html
                 
@@ -260,7 +260,8 @@ def view():
                     form_meta={'action':'/view?result',
                                'method':'POST'},
                     form_data=form_data,
-                    invalid='Class Name Invalid'
+                    invalid='Class Name Invalid',
+                    all_values=ClassDB.findAll()
                 )
                 return html
                 
@@ -271,7 +272,7 @@ def view():
                 data = ClubDB.find(club_name)
 
                 if data is not None:  # Record present
-                    form_data['id'] = data['id']
+                    form_data['ID'] = data['id']
                     
                 else:  # Record not present
                     html = render_template(
@@ -280,7 +281,8 @@ def view():
                         form_meta={'action':'/view?result',
                                    'method':'POST'},
                         form_data=form_data,
-                        invalid='Club Name Not Found'
+                        invalid='Club Name Not Found',
+                        all_values=ClubDB.findAll()
                     )
                     return html
                 
@@ -291,7 +293,8 @@ def view():
                     form_meta={'action':'/view?result',
                                'method':'POST'},
                     form_data=form_data,
-                    invalid='Club Name Invalid'
+                    invalid='Club Name Invalid',
+                    all_values=ClubDB.findAll()
                 )
                 return html
               
@@ -313,7 +316,8 @@ def view():
                         form_meta={'action':'/view?result',
                                    'method':'POST'},
                         form_data=form_data,
-                        invalid='Activity Name Not Found'
+                        invalid='Activity Name Not Found',
+                        all_values=ActivityDB.findAll()
                     )
                     return html
                 
@@ -324,7 +328,8 @@ def view():
                     form_meta={'action':'/view?result',
                                'method':'POST'},
                     form_data=form_data,
-                    invalid='Activity Name Invalid'
+                    invalid='Activity Name Invalid',
+                    all_values=ActivityDB.findAll()
                 )
                 return html
 
@@ -496,7 +501,7 @@ def edit():
             membership_data = MembershipDB.find(student_id, club_id)
             
             # Invalid membership data
-            if not validate.name(form_data['Role']):
+            if not validate.membership_role(form_data['Role']):
                 invalid.append('Role')
                 form_data['Role'] = membership_data['role']
                 html = render_template(
@@ -513,7 +518,7 @@ def edit():
             # Validation for data in participation
             if not validate.category(form_data['Category']):
                 invalid.append('Category')
-            if not validate.name(form_data['Role']):
+            if not validate.participation_role(form_data['Role']):
                 invalid.append('Role')
             if not validate.name(form_data['Award']):
                 invalid.append('Award')
@@ -615,7 +620,7 @@ def edit():
         if form_data['type'] == 'Membership':
             role = form_data['Role']
             
-            if not validate.name(role): # Invalid club name
+            if not validate.membership_role(role): # Invalid club name
                 html = render_template(
                     'edit.html',      
                     page_type='add_new',
@@ -631,7 +636,7 @@ def edit():
             
             if not validate.category(form_data['Category']):
                 invalid.append('Category')
-            if not validate.name(form_data['Role']):
+            if not validate.participation_role(form_data['Role']):
                 invalid.append('Role')
             if not validate.name(form_data['Award']):
                 invalid.append('Award')

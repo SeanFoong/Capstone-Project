@@ -415,7 +415,8 @@
                             name='{{ key }}'
                             value='{{ value }}'
                         />
-                    {% elif key == 'Role' %}                        
+                    {% elif ( (key == 'Role') and
+                              (form_data['type'] == 'Membership') ) %}                        
                         <li class="form-row">
                             <label for='{{ key }}'>{{ key }}</label>
                             <input
@@ -423,10 +424,25 @@
                                 type='text'
                                 name='{{ key }}'
                                 value='{{ value }}'
-                                placeholder='Enter {{ key }} here (President/Vice-President/Exco/Member)'
+                                placeholder='Enter {{ key }} here (President/Vice President/Exco/Member)'
                                 required
                             />
                         </li>
+                
+                    {% elif ( (key == 'Role') and
+                              (form_data['type'] == 'Participation') ) %}  
+                        <li class="form-row">
+                            <label for='{{ key }}'>{{ key }}</label>
+                            <input
+                                id='{{ key }}'
+                                type='text'
+                                name='{{ key }}'
+                                value='{{ value }}'
+                                placeholder='Enter {{ key }} here (Participant/Facilitator/Overall In Charge)'
+                                required
+                            />
+                        </li>
+            
                     {% elif key == 'Category' %}                        
                         <li class="form-row">
                             <label for='{{ key }}'>{{ key }}</label>
@@ -435,8 +451,7 @@
                                 type='text'
                                 name='{{ key }}'
                                 value='{{ value }}'
-                                placeholder='Enter {{ key }} here 
-                                             (Achievement/Enrichment/Leadership/Service)'
+                                placeholder='Enter {{ key }} here (Achievement/Enrichment/Leadership/Service)'
                                 required
                             />
                         </li>
